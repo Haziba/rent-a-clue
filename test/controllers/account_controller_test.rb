@@ -1,8 +1,8 @@
 require "test_helper"
 
-class UserRootControllerTest < ActionDispatch::IntegrationTest
+class AccountControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
-    get user_root_index_url
+    get account_index_url
     assert_response :success
   end
 end

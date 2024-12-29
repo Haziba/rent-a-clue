@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'account/index'
   get 'user_root/index'
   devise_for :users
 
@@ -6,7 +7,7 @@ Rails.application.routes.draw do
 
   authenticated :user do
     resources :subscriptions
-    root to: "user_root#index", as: :user_root
+    resource :account
   end
 
   devise_scope :user do

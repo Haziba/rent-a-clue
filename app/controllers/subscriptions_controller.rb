@@ -1,4 +1,6 @@
 class SubscriptionsController < ApplicationController
+  before_action :set_subscription, except: [:new, :create]
+
   def new
     @subscription = Subscription.new
   end
@@ -8,13 +10,20 @@ class SubscriptionsController < ApplicationController
     @subscription.user = current_user
 
     if @subscription.save
-      redirect_to user_root_path
+      redirect_to account_path
     else
       render :new, status: :unprocessable_entity
     end
   end
 
+  def show
+  end
+
   private
+
+  def set_subscription
+    @subscription = Subscription.find(params[:id])
+  end
 
   def subscription_params
     nil #params.require(:subscription).permit
