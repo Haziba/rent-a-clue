@@ -5,9 +5,13 @@ class Rental < ApplicationRecord
 
   enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7 }
 
+  def active?
+    !(returned? || lost?)
+  end
+
   def send!
     throw 'Rental not ready to be sent' unless to_be_sent?
-    update(status: :sent)
+    update!(status: :sent)
   end
 
   def deliver!

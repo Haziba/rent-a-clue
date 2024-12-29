@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_29_203609) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_29_205122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,6 +30,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_29_203609) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["puzzle_type_id"], name: "index_puzzles_on_puzzle_type_id"
+  end
+
+  create_table "rentals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "subscription_id", null: false
+    t.uuid "puzzle_id", null: false
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["puzzle_id"], name: "index_rentals_on_puzzle_id"
+    t.index ["subscription_id"], name: "index_rentals_on_subscription_id"
+    t.index ["user_id"], name: "index_rentals_on_user_id"
   end
 
   create_table "subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -54,5 +66,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_29_203609) do
   end
 
   add_foreign_key "puzzles", "puzzle_types"
+  add_foreign_key "rentals", "puzzles"
+  add_foreign_key "rentals", "subscriptions"
+  add_foreign_key "rentals", "users"
   add_foreign_key "subscriptions", "users"
 end

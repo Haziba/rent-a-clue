@@ -5,8 +5,13 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :subscriptions, dependent: :destroy
+  has_many :rentals, dependent: :destroy
 
   def subscription
     subscriptions.where(active: true).first
+  end
+
+  def ever_rented?(puzzle_type:)
+    rentals.where(puzzle: puzzle_type.puzzles).exists?
   end
 end
