@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :puzzles
+  resources :puzzle_types
   get 'account/index'
   get 'user_root/index'
   devise_for :users

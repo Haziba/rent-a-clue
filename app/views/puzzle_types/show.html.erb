@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @puzzle_type %>
+
+<div>
+  <%= link_to "Edit this puzzle type", edit_puzzle_type_path(@puzzle_type) %> |
+  <%= link_to "Back to puzzle types", puzzle_types_path %>
+
+  <%= button_to "Destroy this puzzle type", @puzzle_type, method: :delete %>
+</div>

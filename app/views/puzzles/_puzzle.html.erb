@@ -1,0 +1,22 @@
+<div id="<%= dom_id puzzle %>">
+  <p>
+    <strong>Price bought for:</strong>
+    <%= puzzle.price_bought_for %>
+  </p>
+
+  <p>
+    <strong>Condition:</strong>
+    <%= puzzle.condition %>
+  </p>
+
+  <p>
+    <strong>Details:</strong>
+    <%= puzzle.details %>
+  </p>
+
+  <p>
+    <strong>Puzzle type:</strong>
+    <%= link_to puzzle.puzzle_type.name, puzzle_type_path(puzzle.puzzle_type) %>
+  </p>
+
+</div>

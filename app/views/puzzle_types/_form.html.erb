@@ -1,0 +1,32 @@
+<%= form_with(model: puzzle_type) do |form| %>
+  <% if puzzle_type.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(puzzle_type.errors.count, "error") %> prohibited this puzzle_type from being saved:</h2>
+
+      <ul>
+        <% puzzle_type.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :brand, style: "display: block" %>
+    <%= form.text_field :brand %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
