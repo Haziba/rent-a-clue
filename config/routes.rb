@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'rentals/show'
   resources :puzzles
   resources :puzzle_types
   get 'account/index'
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
 
   authenticated :user do
     resources :subscriptions
+    resources :rentals
     resource :account
   end
 
