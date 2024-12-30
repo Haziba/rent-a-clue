@@ -1,21 +1,26 @@
 Rails.application.routes.draw do
-  get 'rentals/show'
-  resources :puzzles
-  resources :puzzle_types
-  get 'account/index'
-  get 'user_root/index'
-  devise_for :users
-
   get "up" => "rails/health#show", as: :rails_health_check
 
-  authenticated :user do
-    resources :subscriptions
-    resources :rentals
-    resource :account
-  end
+  devise_for :users, path: 'users', controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
+  }
 
-  devise_scope :user do
-    root to: 'devise/sessions#new'
+  devise_for :admins, path: 'admins', controllers: {
+    sessions: 'admins/sessions',
+    registrations: 'admins/registrations',
+    passwords: 'admins/passwords'
+  }
+
+  resources :subscriptions
+  resources :rentals
+  resource :account
+
+  namespace :admin do
+    root to: "home#index", as: :admin_root
+    resources :puzzles
+    resources :puzzle_types
   end
 
   root to: "root#index", as: :anon_root

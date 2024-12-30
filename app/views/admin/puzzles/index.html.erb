@@ -6,7 +6,7 @@
   <% @puzzles.each do |puzzle| %>
     <%= render puzzle %>
     <p>
-      <%= link_to "Show this puzzle", puzzle %>
+      <%= link_to "Show this puzzle", admin_puzzle_path(puzzle) %>
     </p>
   <% end %>
 </div>

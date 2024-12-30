@@ -1,4 +1,5 @@
-class PuzzleTypesController < ApplicationController
+class Admin::PuzzleTypesController < ApplicationController
+  before_action :authenticate_admin!
   before_action :set_puzzle_type, only: %i[ show edit update destroy ]
 
   # GET /puzzle_types or /puzzle_types.json
@@ -25,7 +26,7 @@ class PuzzleTypesController < ApplicationController
 
     respond_to do |format|
       if @puzzle_type.save
-        format.html { redirect_to @puzzle_type, notice: "Puzzle type was successfully created." }
+        format.html { redirect_to admin_puzzle_types_path(@puzzle_type), notice: "Puzzle type was successfully created." }
         format.json { render :show, status: :created, location: @puzzle_type }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +39,7 @@ class PuzzleTypesController < ApplicationController
   def update
     respond_to do |format|
       if @puzzle_type.update(puzzle_type_params)
-        format.html { redirect_to @puzzle_type, notice: "Puzzle type was successfully updated." }
+        format.html { redirect_to admin_puzzle_types_path(@puzzle_type), notice: "Puzzle type was successfully updated." }
         format.json { render :show, status: :ok, location: @puzzle_type }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class PuzzleTypesController < ApplicationController
     @puzzle_type.destroy!
 
     respond_to do |format|
-      format.html { redirect_to puzzle_types_path, status: :see_other, notice: "Puzzle type was successfully destroyed." }
+      format.html { redirect_to admin_puzzle_types_path, status: :see_other, notice: "Puzzle type was successfully destroyed." }
       format.json { head :no_content }
     end
   end

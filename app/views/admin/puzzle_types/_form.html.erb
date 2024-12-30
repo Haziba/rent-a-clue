@@ -1,4 +1,4 @@
-<%= form_with(model: puzzle_type) do |form| %>
+<%= form_with(model: puzzle_type, url: puzzle_type.new_record? ? admin_puzzle_types_path : admin_puzzle_type_path(puzzle_type)) do |form| %>
   <% if puzzle_type.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(puzzle_type.errors.count, "error") %> prohibited this puzzle_type from being saved:</h2>

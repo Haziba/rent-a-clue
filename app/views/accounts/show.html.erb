@@ -3,4 +3,8 @@
 
 <%= render @subscription %>
 
-<%= render @active_rental %>
+<% if @active_rental %>
+    <%= render @active_rental %>
+<% else %>
+    <p>No active rentals</p>
+<% end %>
