@@ -1,8 +1,48 @@
-<% provide(:dashboard) do %>
-  <div id="dashboard">
-    <h2>Admin Dashboard</h2>
-    <!-- Include any additional dashboard elements here -->
-  </div>
-<% end %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RentAClue</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-<%= render template: 'layouts/application' %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100">
+    <div class="flex h-screen">
+      <aside class="w-64 bg-gray-800 text-white flex flex-col">
+        <div class="flex items-center justify-center h-16 border-b border-gray-700">
+          <h1 class="text-xl font-semibold">Admin Panel</h1>
+        </div>
+        <nav class="flex-1 px-2 py-4">
+          <a href="#" class="block px-4 py-2 text-gray-200 rounded hover:bg-gray-700">Dashboard</a>
+          <a href="#" class="block px-4 py-2 text-gray-200 rounded hover:bg-gray-700">Users</a>
+          <a href="#" class="block px-4 py-2 text-gray-200 rounded hover:bg-gray-700">Logout</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 flex flex-col">
+        <!-- Top Navigation Bar -->
+        <header class="bg-white shadow flex items-center justify-between px-6 h-16">
+          <h2 class="text-lg font-semibold">Dashboard</h2>
+          <div class="flex items-center">
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
+            />
+            <button class="ml-4 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">New</button>
+          </div>
+        </header>
+
+        <section class="flex-1 p-6">
+          <%= yield %>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
