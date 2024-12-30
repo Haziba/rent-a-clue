@@ -1,4 +1,4 @@
-class Admin::PuzzleTypesController < ApplicationController
+class Admin::PuzzleTypesController < Admin::ApplicationController
   before_action :authenticate_admin!
   before_action :set_puzzle_type, only: %i[ show edit update destroy ]
 

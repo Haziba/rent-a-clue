@@ -11,6 +11,12 @@
   </head>
 
   <body>
-    <%= yield %>
+    <% if content_for?(:dashboard) %>
+      <%= yield :dashboard %>
+    <% end %>
+
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>
