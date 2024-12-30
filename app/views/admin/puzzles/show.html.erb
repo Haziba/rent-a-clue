@@ -3,8 +3,8 @@
 <%= render @puzzle %>
 
 <div>
-  <%= link_to "Edit this puzzle", edit_puzzle_path(@puzzle) %> |
-  <%= link_to "Back to puzzles", puzzles_path %>
+  <%= link_to "Edit this puzzle", edit_admin_puzzle_path(@puzzle) %> |
+  <%= link_to "Back to puzzles", admin_puzzles_path %>
 
-  <%= button_to "Destroy this puzzle", @puzzle, method: :delete %>
+  <%= button_to "Destroy this puzzle", admin_puzzle_path(@puzzle), method: :delete %>
 </div>
