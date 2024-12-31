@@ -1,8 +1,8 @@
 class Admin::InventoryController < Admin::ApplicationController
   before_action :authenticate_admin!
   before_action :set_inventory, only: %i[ show edit update destroy ]
-  before_action :set_puzzle_type, only: %i[ show ]
-  before_action :set_puzzle_types, only: %i[ new create edit update ]
+  before_action :set_puzzle, only: %i[ show ]
+  before_action :set_puzzles, only: %i[ new create edit update ]
 
   # GET /inventory or /inventory.json
   def index
@@ -66,16 +66,16 @@ class Admin::InventoryController < Admin::ApplicationController
       @inventory = Inventory.find(params[:id])
     end
 
-    def set_puzzle_type
-      @puzzle_types = @puzzle.puzzle_type
+    def set_puzzle
+      @puzzle = @inventory.puzzle
     end
 
-    def set_puzzle_types
-      @puzzle_types = PuzzleType.all
+    def set_puzzles
+      @puzzles = Puzzle.all
     end
 
     # Only allow a list of trusted parameters through.
     def inventory_params
-      params.require(:inventory).permit(:price_bought_for, :condition, :details, :puzzle_type_id)
+      params.require(:inventory).permit(:price_bought_for, :condition, :details, :puzzle_id)
     end
 end

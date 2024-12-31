@@ -1,13 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  price_bought_for: 9.99
-  condition: 9.99
-  details: MyString
-  puzzle_type: one
+  name: MyString
+  brand: MyString
+  description: MyString
 
 two:
-  price_bought_for: 9.99
-  condition: 9.99
-  details: MyString
-  puzzle_type: two
+  name: MyString
+  brand: MyString
+  description: MyString

@@ -1,11 +1,11 @@
-<%= form_with(model: puzzle_type, url: puzzle_type.new_record? ? admin_puzzle_types_path : admin_puzzle_type_path(puzzle_type), class: "space-y-6") do |form| %>
-  <% if puzzle_type.errors.any? %>
+<%= form_with(model: puzzle, url: puzzle.new_record? ? admin_puzzles_path : admin_puzzle_path(puzzle), class: "space-y-6") do |form| %>
+  <% if puzzle.errors.any? %>
     <div class="bg-red-100 text-red-700 border border-red-300 p-4 rounded">
       <h2 class="font-semibold">
-        <%= pluralize(puzzle_type.errors.count, "error") %> prohibited this puzzle type from being saved:
+        <%= pluralize(puzzle.errors.count, "error") %> prohibited this puzzle from being saved:
       </h2>
       <ul class="mt-2 space-y-1">
-        <% puzzle_type.errors.full_messages.each do |message| %>
+        <% puzzle.errors.full_messages.each do |message| %>
           <li>• <%= message %></li>
         <% end %>
       </ul>
@@ -32,6 +32,6 @@
 
   <!-- Submit Button -->
   <div>
-    <%= form.submit "Save Puzzle Type", class: "w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
+    <%= form.submit "Save Puzzle", class: "w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
   </div>
 <% end %>

@@ -17,7 +17,7 @@ class InventoryTest < ApplicationSystemTestCase
     fill_in "Condition", with: @inventory.condition
     fill_in "Details", with: @inventory.details
     fill_in "Price bought for", with: @inventory.price_bought_for
-    fill_in "Inventory type", with: @inventory.puzzle_type_id
+    fill_in "Inventory type", with: @inventory.puzzle_id
     click_on "Create Inventory"
 
     assert_text "Inventory was successfully created"
@@ -31,7 +31,7 @@ class InventoryTest < ApplicationSystemTestCase
     fill_in "Condition", with: @inventory.condition
     fill_in "Details", with: @inventory.details
     fill_in "Price bought for", with: @inventory.price_bought_for
-    fill_in "Inventory type", with: @inventory.inventory_type_id
+    fill_in "Inventory type", with: @inventory.puzzle_id
     click_on "Update Inventory"
 
     assert_text "Inventory was successfully updated"

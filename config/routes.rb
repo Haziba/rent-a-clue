@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "home#index"
     resources :inventory
-    resources :puzzle_types
+    resources :puzzles
   end
 
   root to: "root#index", as: :anon_root

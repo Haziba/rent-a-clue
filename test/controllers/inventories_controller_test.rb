@@ -17,7 +17,7 @@ class PuzzlesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create puzzle" do
     assert_difference("Puzzle.count") do
-      post puzzles_url, params: { puzzle: { brand: @puzzle.brand, description: @puzzle.description, name: @puzzle.name } }
+      post puzzles_url, params: { puzzle: { condition: @puzzle.condition, details: @puzzle.details, price_bought_for: @puzzle.price_bought_for, puzzle_id: @puzzle.puzzle_id } }
     end
 
     assert_redirected_to puzzle_url(Puzzle.last)
@@ -34,7 +34,7 @@ class PuzzlesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update puzzle" do
-    patch puzzle_url(@puzzle), params: { puzzle: { brand: @puzzle.brand, description: @puzzle.description, name: @puzzle.name } }
+    patch puzzle_url(@puzzle), params: { puzzle: { condition: @puzzle.condition, details: @puzzle.details, price_bought_for: @puzzle.price_bought_for, puzzle_id: @puzzle.puzzle_id } }
     assert_redirected_to puzzle_url(@puzzle)
   end
 

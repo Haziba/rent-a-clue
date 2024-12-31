@@ -1,4 +1,4 @@
-class PuzzleType < ApplicationRecord
+class Puzzle < ApplicationRecord
   has_many :inventory, dependent: :destroy
 
   validates_presence_of :name, :brand

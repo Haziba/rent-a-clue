@@ -11,7 +11,7 @@ class User < ApplicationRecord
     subscriptions.where(active: true).first
   end
 
-  def ever_rented?(puzzle_type:)
-    rentals.where(puzzle: puzzle_type.puzzles).exists?
+  def ever_rented?(puzzle:)
+    rentals.where(puzzle: puzzle).exists?
   end
 end

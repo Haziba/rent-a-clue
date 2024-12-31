@@ -1,5 +1,5 @@
 class Inventory < ApplicationRecord
-  belongs_to :puzzle_type
+  belongs_to :puzzle
   has_many :rentals
 
   def has_active_rental?

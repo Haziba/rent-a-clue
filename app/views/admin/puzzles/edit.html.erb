@@ -1,19 +1,19 @@
 <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
   <!-- Header -->
   <header class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">Editing puzzle type</h1>
+    <h1 class="text-2xl font-bold text-gray-800">Editing puzzle</h1>
   </header>
 
   <!-- Form -->
-  <%= render "form", puzzle_type: @puzzle_type %>
+  <%= render "form", puzzle: @puzzle %>
 
   <!-- Back Link -->
   <div class="mt-6">
-    <%= link_to admin_puzzle_types_path, class: "text-blue-600 hover:underline inline-flex items-center" do %>
+    <%= link_to admin_puzzles_path, class: "text-blue-600 hover:underline inline-flex items-center" do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1.293-10.707a1 1 0 00-1.414 0L7 10.172V9a1 1 0 00-2 0v4a1 1 0 001 1h4a1 1 0 100-2H8.414l2.879-2.879a1 1 0 000-1.414z" clip-rule="evenodd" />
       </svg>
-      Back to Puzzle Types
+      Back to Puzzles
     <% end %>
   </div>
 </div>

@@ -27,7 +27,7 @@
         <% @to_be_sent_rentals.each do |rental| %>
             <tr>
                 <td class="px-6 py-4"><%= rental.user.email %></td>
-                <td class="px-6 py-4"><%= rental.inventory.puzzle_type.name %></td>
+                <td class="px-6 py-4"><%= rental.inventory.puzzle.name %></td>
                 <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
                 <td class="px-6 py-4">
                     <button class="text-blue-600 hover:underline">Label</button>
@@ -57,7 +57,7 @@
         <% @recently_updated_rentals.each do |rental| %>
             <tr>
                 <td class="px-6 py-4"><%= rental.user.email %></td>
-                <td class="px-6 py-4"><%= rental.inventory.puzzle_type.name %></td>
+                <td class="px-6 py-4"><%= rental.inventory.puzzle.name %></td>
                 <td class="px-6 py-4"><%= rental.status %></td>
                 <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
             </tr>

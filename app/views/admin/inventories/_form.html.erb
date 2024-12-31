@@ -27,8 +27,8 @@
   </div>
 
   <div>
-    <%= form.label :puzzle_type_id, style: "display: block" %>
-    <%= form.select :puzzle_type_id, @puzzle_types.map { |pt| [pt.name, pt.id] } %>
+    <%= form.label :puzzle_id, style: "display: block" %>
+    <%= form.select :puzzle_id, @puzzles.map { |pt| [pt.name, pt.id] } %>
   </div>
 
   <div>

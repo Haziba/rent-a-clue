@@ -1,4 +1,4 @@
-<% provide(:title, "Puzzle Types") %>
+<% provide(:title, "Puzzles") %>
 
 <p style="color: green"><%= notice %></p>
 
@@ -14,10 +14,10 @@
     </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
-      <%= render @puzzle_types %>
+      <%= render @puzzles %>
     </tbody>
 </table>
 </div>
 
 
-<%= link_to "New puzzle type", new_admin_puzzle_type_path, class: 'bg-blue-600 text-white px-4 py-2 rounded hover:underline hover:bg-blue-700' %>
+<%= link_to "New puzzle", new_admin_puzzle_path, class: 'bg-blue-600 text-white px-4 py-2 rounded hover:underline hover:bg-blue-700' %>
