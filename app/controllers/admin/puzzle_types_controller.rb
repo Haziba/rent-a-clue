@@ -9,6 +9,7 @@ class Admin::PuzzleTypesController < Admin::ApplicationController
 
   # GET /puzzle_types/1 or /puzzle_types/1.json
   def show
+    @puzzles = @puzzle_type.puzzles
   end
 
   # GET /puzzle_types/new

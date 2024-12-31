@@ -1,32 +1,37 @@
-<%= form_with(model: puzzle_type, url: puzzle_type.new_record? ? admin_puzzle_types_path : admin_puzzle_type_path(puzzle_type)) do |form| %>
+<%= form_with(model: puzzle_type, url: puzzle_type.new_record? ? admin_puzzle_types_path : admin_puzzle_type_path(puzzle_type), class: "space-y-6") do |form| %>
   <% if puzzle_type.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(puzzle_type.errors.count, "error") %> prohibited this puzzle_type from being saved:</h2>
-
-      <ul>
-        <% puzzle_type.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="bg-red-100 text-red-700 border border-red-300 p-4 rounded">
+      <h2 class="font-semibold">
+        <%= pluralize(puzzle_type.errors.count, "error") %> prohibited this puzzle type from being saved:
+      </h2>
+      <ul class="mt-2 space-y-1">
+        <% puzzle_type.errors.full_messages.each do |message| %>
+          <li>• <%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
+  <!-- Name Field -->
   <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <%= form.label :name, "Name", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
+  <!-- Brand Field -->
   <div>
-    <%= form.label :brand, style: "display: block" %>
-    <%= form.text_field :brand %>
+    <%= form.label :brand, "Brand", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :brand, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
+  <!-- Description Field -->
   <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
+    <%= form.label :description, "Description", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :description, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
+  <!-- Submit Button -->
   <div>
-    <%= form.submit %>
+    <%= form.submit "Save Puzzle Type", class: "w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
   </div>
 <% end %>

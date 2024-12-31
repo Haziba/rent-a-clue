@@ -1,10 +1,37 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @puzzle_type %>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <section class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-lg font-bold mb-4">Puzzle Type</h2>
+    <div class="space-y-2">
+      <p><span class="font-semibold">Name:</span> <%= @puzzle_type.name %></p>
+      <p><span class="font-semibold">Brand:</span> <%= @puzzle_type.brand %></p>
+      <p><span class="font-semibold">Description:</span> <%= @puzzle_type.description %></p>
+      <p><span class="font-semibold">Total Rentals:</span> 25</p>
+    </div>
+  </section>
+
+  <section class="bg-white shadow rounded-lg p-6 md:col-span-2">
+    <h2 class="text-lg font-bold mb-4">Inventory</h2>
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Puzzle ID</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Condition</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Status</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <%= render @puzzles %>
+      </tbody>
+    </table>
+  </section>
+</div>
 
 <div>
-  <%= link_to "Edit this puzzle type", edit_puzzle_type_path(@puzzle_type) %> |
+  <%= link_to "Edit this puzzle type", edit_admin_puzzle_type_path(@puzzle_type) %> |
   <%= link_to "Back to puzzle types", admin_puzzle_types_path %>
 
-  <%= button_to "Destroy this puzzle type", @puzzle_type, method: :delete %>
+  <%= button_to "Destroy this puzzle type", admin_puzzle_type_path(@puzzle_type), method: :delete %>
 </div>
