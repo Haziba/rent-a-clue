@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resource :account
 
   namespace :admin do
-    root to: "home#index", as: :admin_root
+    root to: "home#index"
     resources :puzzles
     resources :puzzle_types
   end

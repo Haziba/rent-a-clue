@@ -18,8 +18,11 @@
           <h1 class="text-xl font-semibold">Admin Panel</h1>
         </div>
         <nav class="flex-1 px-2 py-4">
-          <a href="#" class="block px-4 py-2 text-gray-200 rounded hover:bg-gray-700">Dashboard</a>
-          <a href="#" class="block px-4 py-2 text-gray-200 rounded hover:bg-gray-700">Users</a>
+          <%= link_to "Dashboard", admin_root_path, class: 'block px-4 py-2 text-gray-200 rounded hover:bg-gray-700' %>
+          <%= link_to "Users", '#', class: 'block px-4 py-2 text-gray-200 rounded hover:bg-gray-700' %>
+          <%= link_to "Rentals", '#', class: 'block px-4 py-2 text-gray-200 rounded hover:bg-gray-700' %>
+          <%= link_to "Puzzle Types", admin_puzzle_types_path, class: 'block px-4 py-2 text-gray-200 rounded hover:bg-gray-700' %>
+          <%= link_to "Puzzles", admin_puzzles_path, class: 'block px-4 py-2 text-gray-200 rounded hover:bg-gray-700' %>
           <a href="#" class="block px-4 py-2 text-gray-200 rounded hover:bg-gray-700">Logout</a>
         </nav>
       </aside>
@@ -28,7 +31,7 @@
       <main class="flex-1 flex flex-col">
         <!-- Top Navigation Bar -->
         <header class="bg-white shadow flex items-center justify-between px-6 h-16">
-          <h2 class="text-lg font-semibold">Dashboard</h2>
+            <h2 class="text-lg font-semibold"><%= content_for?(:title) ? yield(:title) : "Dashboard" %></h2>
           <div class="flex items-center">
             <input 
               type="text" 

@@ -1,14 +1,23 @@
+<% provide(:title, "Puzzle Types") %>
+
 <p style="color: green"><%= notice %></p>
 
-<h1>Puzzle types</h1>
-
-<div id="puzzle_types">
-  <% @puzzle_types.each do |puzzle_type| %>
-    <%= render puzzle_type %>
-    <p>
-      <%= link_to "Show this puzzle type", admin_puzzle_type_path(puzzle_type) %>
-    </p>
-  <% end %>
+<!-- Table -->
+<div class="bg-white shadow rounded-lg mb-6">
+<table class="min-w-full text-left divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+    <tr>
+        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Box</th>
+        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Brand</th>
+        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Stock</th>
+        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Actions</th>
+    </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <%= render @puzzle_types %>
+    </tbody>
+</table>
 </div>
+
 
 <%= link_to "New puzzle type", new_admin_puzzle_type_path %>
