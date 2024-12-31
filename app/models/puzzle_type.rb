@@ -1,13 +1,13 @@
 class PuzzleType < ApplicationRecord
-  has_many :puzzles, dependent: :destroy
+  has_many :inventory, dependent: :destroy
 
   validates_presence_of :name, :brand
 
-  def has_active_puzzles?
-    available_puzzles.any?
+  def has_available_inventory?
+    available_inventory.any?
   end
 
-  def available_puzzles
-    @available_puzzles ||= puzzles.reject { |puzzle| puzzle.has_active_rental? }
+  def available_inventory
+    @available_inventory ||= inventory.reject { |inventory| inventory.has_active_rental? }
   end
 end

@@ -1,4 +1,4 @@
-class Puzzle < ApplicationRecord
+class Inventory < ApplicationRecord
   belongs_to :puzzle_type
   has_many :rentals
 

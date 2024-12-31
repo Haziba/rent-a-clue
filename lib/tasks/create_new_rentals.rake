@@ -7,16 +7,16 @@ namespace :rentals do
   private
 
   def create_rental(user)
-    puzzle_types_in_stock = PuzzleType.all.filter(&:has_active_puzzles?)
+    puzzle_types_in_stock = PuzzleType.all.filter(&:has_available_inventory?)
     puzzles_not_yet_rented_by_user = puzzle_types_in_stock.reject { |puzzle_type| user.ever_rented?(puzzle_type: puzzle_type) }
-    available_puzzles = puzzles_not_yet_rented_by_user.flat_map(&:available_puzzles)
-    puzzle = available_puzzles.sample
+    available_inventory = puzzles_not_yet_rented_by_user.flat_map(&:available_inventory)
+    inventory = available_inventory.sample
 
-    throw "No puzzles available" unless puzzle # Email customer saying there's a delay, notify admin of issue
+    throw "No puzzles available" unless inventory # Email customer saying there's a delay, notify admin of issue
 
-    Rails.logger.info "Creating rental for user #{user.id} and puzzle #{puzzle.puzzle_type.name} (#{puzzle.id})"
+    Rails.logger.info "Creating rental for user #{user.id} and inventory #{inventory.puzzle_type.name} (#{inventory.id})"
 
-    user.rentals.create(puzzle: puzzle, subscription: user.subscription, status: :to_be_sent)
+    user.rentals.create(inventory: inventory, subscription: user.subscription, status: :to_be_sent)
   end
 
   def eligible_users

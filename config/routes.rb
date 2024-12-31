@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root to: "home#index"
-    resources :puzzles
+    resources :inventory
     resources :puzzle_types
   end
 

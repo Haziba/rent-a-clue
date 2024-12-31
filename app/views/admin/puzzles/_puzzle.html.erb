@@ -1,8 +1,0 @@
-<tr id="<%= dom_id puzzle %>">
-  <td class="px-4 py-2"><%= link_to puzzle.id, admin_puzzle_path(puzzle) %></td>
-  <td class="px-4 py-2"><%= puzzle.condition %></td>
-  <td class="px-4 py-2"><span class="text-gray-600"><%= puzzle.last_rental ? puzzle.last_rental.status.titleize : "-" %></span></td>
-  <td class="px-4 py-2">
-    <button class="text-blue-600 hover:underline">View</button>
-  </td>
-</tr>

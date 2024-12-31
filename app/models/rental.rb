@@ -1,7 +1,7 @@
 class Rental < ApplicationRecord
   belongs_to :user
   belongs_to :subscription
-  belongs_to :puzzle
+  belongs_to :inventory
 
   before_save :update_last_status_update_at, if: :will_save_change_to_status?
 
