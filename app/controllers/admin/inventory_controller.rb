@@ -1,7 +1,7 @@
 class Admin::InventoryController < Admin::ApplicationController
   before_action :authenticate_admin!
   before_action :set_inventory, only: %i[ show edit update destroy ]
-  before_action :set_puzzle, only: %i[ show ]
+  before_action :set_puzzle, only: %i[ new create edit update show ]
   before_action :set_puzzles, only: %i[ new create edit update ]
 
   # GET /inventory or /inventory.json
@@ -16,6 +16,7 @@ class Admin::InventoryController < Admin::ApplicationController
   # GET /inventory/new
   def new
     @inventory = Inventory.new
+    @inventory.puzzle = @puzzle if @puzzle
   end
 
   # GET /inventory/1/edit
@@ -25,6 +26,7 @@ class Admin::InventoryController < Admin::ApplicationController
   # POST /inventory or /inventory.json
   def create
     @inventory = Inventory.new(inventory_params)
+    @inventory.puzzle = @puzzle if @puzzle
 
     respond_to do |format|
       if @inventory.save
@@ -67,7 +69,11 @@ class Admin::InventoryController < Admin::ApplicationController
     end
 
     def set_puzzle
-      @puzzle = @inventory.puzzle
+      if params[:puzzle_id]
+        @puzzle = Puzzle.find(params[:puzzle_id])
+      else
+        @puzzle = @inventory.puzzle
+      end
     end
 
     def set_puzzles

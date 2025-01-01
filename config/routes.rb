@@ -21,7 +21,9 @@ Rails.application.routes.draw do
     resources :users
     root to: "home#index"
     resources :inventory
-    resources :puzzles
+    resources :puzzles do
+      resources :inventory
+    end
   end
 
   root to: "root#index", as: :anon_root
