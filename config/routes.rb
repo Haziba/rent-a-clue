@@ -17,6 +17,11 @@ Rails.application.routes.draw do
   resources :rentals
   resource :account
 
+  post '/checkout/session/create' => 'checkout/session#create'
+  get '/checkout/session/:session_id/success' => 'checkout/session#success'
+  get '/checkout/session/:session_id/cancel' => 'checkout/session#cancel'
+  post '/checkout/webhook' => 'checkout/webhook#create'
+
   namespace :admin do
     resources :users
     root to: "home#index"

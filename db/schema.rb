@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_31_011802) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_01_220203) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,12 +57,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_31_011802) do
     t.index ["user_id"], name: "index_rentals_on_user_id"
   end
 
+  create_table "stripe_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_stripe_sessions_on_user_id"
+  end
+
   create_table "subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.date "last_payment_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: false, null: false
+    t.string "stripe_subscription_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -74,6 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_31_011802) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_customer_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -82,5 +92,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_31_011802) do
   add_foreign_key "rentals", "inventories"
   add_foreign_key "rentals", "subscriptions"
   add_foreign_key "rentals", "users"
+  add_foreign_key "stripe_sessions", "users"
   add_foreign_key "subscriptions", "users"
 end
