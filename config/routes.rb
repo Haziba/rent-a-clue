@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resource :account
 
   namespace :admin do
+    resources :users
     root to: "home#index"
     resources :inventory
     resources :puzzles

@@ -1,0 +1,37 @@
+<% provide(:title, "User - #{@user.email}") %>
+
+<p style="color: green"><%= notice %></p>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <section class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-lg font-bold mb-4">User</h2>
+    <div class="space-y-2">
+      <p><span class="font-semibold">Email:</span> <%= @user.email %></p>
+      <p><span class="font-semibold">Subscribed since:</span> <%= @user.subscription ? @user.subscription.created_at : '-' %></p>
+    </div>
+  </section>
+
+  <section class="bg-white shadow rounded-lg p-6 md:col-span-2">
+    <h2 class="text-lg font-bold mb-4">Rentals</h2>
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Puzzle type</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Created at</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Status</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Last status update at</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <%= render @rentals %>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<div>
+  <%= link_to "Edit this user", edit_admin_user_path(@user) %> |
+  <%= link_to "Back to user", admin_users_path %>
+
+  <%= button_to "Destroy this user", admin_user_path(@user), method: :delete %>
+</div>
