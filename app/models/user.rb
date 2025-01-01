@@ -12,6 +12,7 @@ class User < ApplicationRecord
   end
 
   def ever_rented?(puzzle:)
-    rentals.where(puzzle: puzzle).exists?
+    rented_puzzles = rentals.map(&:inventory).map(&:puzzle).uniq
+    rented_puzzles.include?(puzzle)
   end
 end

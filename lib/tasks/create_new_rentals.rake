@@ -16,7 +16,7 @@ namespace :rentals do
 
     Rails.logger.info "Creating rental for user #{user.id} and inventory #{inventory.puzzle.name} (#{inventory.id})"
 
-    user.rentals.create(inventory: inventory, subscription: user.subscription, status: :to_be_sent)
+    user.rentals.create!(inventory: inventory, subscription: user.subscription, status: :to_be_sent)
   end
 
   def eligible_users

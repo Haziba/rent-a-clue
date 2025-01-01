@@ -11,13 +11,18 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <% if content_for?(:dashboard) %>
-      <%= yield :dashboard %>
-    <% end %>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="max-w-4xl mx-auto py-8 px-4">
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-center">Rent a Clue</h1>
+      </header>
 
-    <main>
       <%= yield %>
-    </main>
+
+      <!-- Footer -->
+      <footer class="mt-8 text-center text-sm text-gray-600">
+        &copy; 2024 Puzzle Subscription Service. All rights reserved.
+      </footer>
+    </div>
   </body>
 </html>
