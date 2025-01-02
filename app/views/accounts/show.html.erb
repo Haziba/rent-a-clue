@@ -1,6 +1,6 @@
 <section class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-semibold mb-4">Subscription Status</h2>
     <% if @subscription %>
-        <h2 class="text-xl font-semibold mb-4">Subscription Status</h2>
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-lg font-medium">Plan: <span class="text-blue-500">Monthly</span></p>
@@ -17,11 +17,18 @@
             <% end %>
         </div>
     <% else %>
-        <form action="/checkout/session/create" method="POST" data-turbo="false">
-            <input type="hidden" name="priceId" value="price_1QcW4lFqOwmU7NyixKqqcqIU" />
-            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-            <button type="submit">Checkout</button>
-        </form>
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-lg font-medium">Plan: <span class="text-blue-500">Not active</span></p>
+                <div class="w-100">
+                    <form action="/checkout/session/create" method="POST" data-turbo="false">
+                        <input type="hidden" name="priceId" value="price_1QcW4lFqOwmU7NyixKqqcqIU" />
+                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                        <button type="submit" class="mx-auto px-6 py-2 bg-green-600 hover:bg-green-900 text-white">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     <% end %>
 </section>
 
