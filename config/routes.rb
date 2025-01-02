@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :subscriptions
   resources :rentals
   resource :account
+  resource :contact
 
   post '/checkout/session/create' => 'checkout/session#create'
   get '/checkout/session/:session_id/success' => 'checkout/session#success'

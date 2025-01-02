@@ -43,7 +43,7 @@ class SendCloud::BodyBuilder
     }
   end
 
-  def return_body(user:)
+  def self.return_body(user:)
     {
       "parcel":
       {
