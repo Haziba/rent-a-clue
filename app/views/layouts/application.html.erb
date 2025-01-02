@@ -11,6 +11,15 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <%= yield %>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="max-w-7xl mx-auto py-8 px-4">
+      <%= yield %>
+
+      <!-- Footer -->
+      <footer class="mt-12 text-center text-sm text-gray-600">
+        &copy; 2024 Puzzle Subscription Service. All rights reserved.
+      </footer>
+    </div>
+  </body>
   </body>
 </html>
