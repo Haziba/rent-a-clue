@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resources :puzzles do
       resources :inventory
     end
+    get '/parcels/labels' => 'parcels#labels'
   end
 
   root to: "root#index", as: :anon_root

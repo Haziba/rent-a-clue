@@ -20,8 +20,6 @@ namespace :rentals do
   end
 
   def eligible_users
-    subscribed_users = Subscription.where(active: true).map(&:user)
-    subscribed_users_without_active_rentals = subscribed_users.filter { |user| user.rentals.filter(&:active?).empty? }
-    subscribed_users_without_active_rentals
+    User.all.filter(&:eligible_for_new_rental?)
   end
 end

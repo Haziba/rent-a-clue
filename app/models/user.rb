@@ -16,4 +16,8 @@ class User < ApplicationRecord
     rented_puzzles = rentals.map(&:inventory).map(&:puzzle).uniq
     rented_puzzles.include?(puzzle)
   end
+
+  def eligible_for_new_rental?
+    contact.present? && rentals.filter(&:active?).empty?
+  end
 end
