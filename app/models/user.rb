@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :subscriptions, dependent: :destroy
   has_many :rentals, dependent: :destroy
+  has_one :contact, dependent: :destroy
 
   def subscription
     subscriptions.where(active: true).first

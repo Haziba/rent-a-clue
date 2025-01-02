@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_01_220203) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_02_215256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_01_220203) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "phone"
+    t.string "address_1"
+    t.string "address_2"
+    t.string "city"
+    t.string "postal_code"
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
   create_table "inventories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -52,6 +65,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_01_220203) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_status_update_at"
+    t.integer "parcel_id"
+    t.integer "return_id"
     t.index ["inventory_id"], name: "index_rentals_on_inventory_id"
     t.index ["subscription_id"], name: "index_rentals_on_subscription_id"
     t.index ["user_id"], name: "index_rentals_on_user_id"
@@ -88,6 +103,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_01_220203) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "contacts", "users"
   add_foreign_key "inventories", "puzzles"
   add_foreign_key "rentals", "inventories"
   add_foreign_key "rentals", "subscriptions"
