@@ -40,7 +40,7 @@ class Rental < ApplicationRecord
   end
 
   def lost!
-    throw 'Rental not ready to be lost' unless to_be_returned?
+    throw 'Rental not ready to be lost' unless to_be_returned? || late?
     update(status: :lost)
   end
 

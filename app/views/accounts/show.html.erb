@@ -52,16 +52,7 @@
 <section class="bg-white shadow-md rounded-lg p-6">
     <% if @active_rental %>
         <h2 class="text-xl font-semibold mb-4">Current Rental</h2>
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-lg font-medium">Puzzle: <span class="text-blue-500"><%= @active_rental.inventory.puzzle.name %></span></p>
-                <p class="text-sm text-gray-600">Rental Status: <span class="text-gray-800"><%= @active_rental.status.titleize %></span></p>
-                <p class="text-sm text-gray-600">Due Date: <span class="text-gray-800"><%= (@active_rental.created_at + 1.month).to_date %></span></p>
-            </div>
-            <div class="px-4 py-2 bg-yellow-100 text-yellow-700 font-semibold rounded-full">
-                Out for Delivery
-            </div>
-        </div>
+        <%= render @active_rental %>
     <% else %>
         No active Rental
     <% end %>

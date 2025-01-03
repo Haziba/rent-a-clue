@@ -1,7 +1,10 @@
-<tr id="<%= dom_id rental %>">
-  <td class="px-6 py-4"><%= rental.inventory.puzzle.name %></td>
-  <td class="px-6 py-4"><%= rental.created_at %></td>
-  <td class="px-6 py-4"><%= rental.status %></td>
-  <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
-</tr>
+<div class="flex items-center justify-between" id="<%= dom_id(rental) %>">
+    <div>
+        <p class="text-lg font-medium">Puzzle: <span class="text-blue-500"><%= rental.inventory.puzzle.name %></span></p>
+        <p class="text-sm text-gray-600">Due Date: <span class="text-gray-800"><%= (rental.created_at + 1.month).to_date %></span></p>
+    </div>
 
+    <div class="px-4 py-2 <%= rental_status_classes(rental.status) %> font-semibold rounded-full">
+        <%= rental.status.titleize %>
+    </div>
+</div>
