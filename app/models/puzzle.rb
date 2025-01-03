@@ -10,4 +10,8 @@ class Puzzle < ApplicationRecord
   def available_inventory
     @available_inventory ||= inventory.reject { |inventory| inventory.has_active_rental? }
   end
+
+  def rental_count
+    inventory.map(&:rentals).flatten.count
+  end
 end

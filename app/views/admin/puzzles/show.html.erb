@@ -9,12 +9,15 @@
       <p><span class="font-semibold">Name:</span> <%= @puzzle.name %></p>
       <p><span class="font-semibold">Brand:</span> <%= @puzzle.brand %></p>
       <p><span class="font-semibold">Description:</span> <%= @puzzle.description %></p>
-      <p><span class="font-semibold">Total Rentals:</span> 25</p>
+      <p><span class="font-semibold">Total Rentals:</span> <%= @puzzle.rental_count %></p>
     </div>
   </section>
 
   <section class="bg-white shadow rounded-lg p-6 md:col-span-2">
-    <h2 class="text-lg font-bold mb-4">Inventory</h2>
+    <div class="flex justify-between">
+      <h2 class="text-lg font-bold mb-4">Inventory</h2>
+      <%= link_to 'Add', new_admin_puzzle_inventory_path(@puzzle), class: 'rounded px-3 py-1 bg-blue-600 hover:be-blue-900 text-white' %>
+    </div>
     <table class="min-w-full divide-y divide-gray-200 text-sm">
       <thead class="bg-gray-50">
         <tr>
@@ -28,13 +31,5 @@
         <%= render @inventory %>
       </tbody>
     </table>
-    <%= link_to 'Add', new_admin_puzzle_inventory_path(@puzzle), class: 'rounded px-4 py-2 bg-blue-600 hover:be-blue-900 text-white' %>
   </section>
-</div>
-
-<div>
-  <%= link_to "Edit this puzzle", edit_admin_puzzle_path(@puzzle) %> |
-  <%= link_to "Back to puzzle", admin_puzzles_path %>
-
-  <%= button_to "Destroy this puzzle", admin_puzzle_path(@puzzle), method: :delete %>
 </div>
