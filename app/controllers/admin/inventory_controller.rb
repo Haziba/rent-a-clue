@@ -30,7 +30,7 @@ class Admin::InventoryController < Admin::ApplicationController
 
     respond_to do |format|
       if @inventory.save
-        format.html { redirect_to admin_inventory_path(@inventory), notice: "Inventory was successfully created." }
+        format.html { redirect_to admin_puzzle_path(@inventory.puzzle), notice: "Inventory was successfully created." }
         format.json { render :show, status: :created, location: @inventory }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -43,7 +43,7 @@ class Admin::InventoryController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @inventory.update(inventory_params)
-        format.html { redirect_to admin_inventorypath(@inventory), notice: "Inventory was successfully updated." }
+        format.html { redirect_to admin_puzzle_path(@inventory.puzzle), notice: "Inventory was successfully updated." }
         format.json { render :show, status: :ok, location: @inventory }
       else
         format.html { render :edit, status: :unprocessable_entity }
