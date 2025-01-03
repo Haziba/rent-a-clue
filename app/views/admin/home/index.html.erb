@@ -11,8 +11,9 @@
 
     <!-- Table -->
     <div class="bg-white shadow rounded-lg mb-6">
-    <div class="p-6 border-b border-gray-200">
+    <div class="p-6 border-b border-gray-200 flex justify-between">
         <h3 class="text-gray-700 text-lg font-medium">Orders to be sent</h3>
+        <%= link_to "See All Labels", admin_parcels_labels_path(rental_ids: @to_be_sent_rentals.map(&:id)), class: 'bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700' %>
     </div>
     <table class="min-w-full text-left divide-y divide-gray-200">
         <thead class="bg-gray-50">
@@ -26,12 +27,11 @@
         <tbody class="bg-white divide-y divide-gray-200">
         <% @to_be_sent_rentals.each do |rental| %>
             <tr>
-                <td class="px-6 py-4"><%= rental.user.email %></td>
-                <td class="px-6 py-4"><%= rental.inventory.puzzle.name %></td>
+                <td class="px-6 py-4"><%= link_to rental.user.email, admin_user_path(rental.user) %></td>
+                <td class="px-6 py-4"><%= link_to rental.inventory.puzzle.name, admin_puzzle_path(rental.inventory.puzzle) %></td>
                 <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
                 <td class="px-6 py-4">
-                    <button class="text-blue-600 hover:underline">Label</button>
-                    <button class="text-red-600 hover:underline ml-2">Send</button>
+                    <%= link_to "Label", admin_parcels_labels_path(rental_ids: rental.id), class: 'bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700' %>
                 </td>
             </tr>
         <% end %>
@@ -56,8 +56,8 @@
         <tbody class="bg-white divide-y divide-gray-200">
         <% @recently_updated_rentals.each do |rental| %>
             <tr>
-                <td class="px-6 py-4"><%= rental.user.email %></td>
-                <td class="px-6 py-4"><%= rental.inventory.puzzle.name %></td>
+                <td class="px-6 py-4"><%= link_to rental.user.email, admin_user_path(rental.user) %></td>
+                <td class="px-6 py-4"><%= link_to rental.inventory.puzzle.name, admin_puzzle_path(rental.inventory.puzzle) %></td>
                 <td class="px-6 py-4"><%= rental.status %></td>
                 <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
             </tr>
