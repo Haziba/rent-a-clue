@@ -32,6 +32,23 @@
     <% end %>
 </section>
 
+<section class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-semibold mb-4">Shipping Details</h2>
+    <% if @contact %>
+        <div class="flex items-center justify-between">
+            <%= render @contact %>
+        </div>
+    <% else %>
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="w-100">
+                    <%= link_to "Add shipping details", new_contact_path, class: 'mx-auto px-6 py-2 bg-green-600 hover:bg-green-900 text-white' %>
+                </div>
+            </div>
+        </div>
+    <% end %>
+</section>
+
 <section class="bg-white shadow-md rounded-lg p-6">
     <% if @active_rental %>
         <h2 class="text-xl font-semibold mb-4">Current Rental</h2>
