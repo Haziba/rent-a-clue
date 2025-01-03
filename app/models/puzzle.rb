@@ -1,4 +1,6 @@
 class Puzzle < ApplicationRecord
+  has_one_attached :image
+
   has_many :inventory, dependent: :destroy
 
   validates_presence_of :name, :brand

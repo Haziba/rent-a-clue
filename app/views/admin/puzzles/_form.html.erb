@@ -1,4 +1,4 @@
-<%= form_with(model: puzzle, url: puzzle.new_record? ? admin_puzzles_path : admin_puzzle_path(puzzle), class: "space-y-6") do |form| %>
+<%= form_with(model: puzzle, url: puzzle.new_record? ? admin_puzzles_path : admin_puzzle_path(puzzle), class: "space-y-6", html: { multipart: true }) do |form| %>
   <% if puzzle.errors.any? %>
     <div class="bg-red-100 text-red-700 border border-red-300 p-4 rounded">
       <h2 class="font-semibold">
@@ -28,6 +28,11 @@
   <div>
     <%= form.label :description, "Description", class: "block text-sm font-medium text-gray-700" %>
     <%= form.text_field :description, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+  </div>
+
+  <div>
+    <%= form.label :image, "Image", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.file_field :image, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
   <!-- Submit Button -->

@@ -67,6 +67,6 @@ class Admin::PuzzlesController < Admin::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def puzzle_params
-      params.require(:puzzle).permit(:name, :brand, :description)
+      params.require(:puzzle).permit(:name, :brand, :description, :image)
     end
 end
