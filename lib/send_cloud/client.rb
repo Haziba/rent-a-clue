@@ -49,4 +49,18 @@ class SendCloud::Client
 
     JSON.parse(response.body)
   end
+
+  def get_parcel_status(parcel_id)
+    uri = URI("#{BASE_URL}/parcels/#{parcel_id}")
+
+    request = Net::HTTP::Get.new(uri)
+    request.basic_auth(@api_key, @api_secret)
+    request.content_type = 'application/json'
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+
+    JSON.parse(response.body)['parcel']['status']
+  end
 end

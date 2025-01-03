@@ -4,52 +4,69 @@ namespace :rentals do
     active_rentals.each { |rental| update_status(rental) }
   end
 
+  SENT_STATUSES = [3, 4, 5, 6, 7, 8, 12, 13, 22, 80, 91, 92, 62990, 62991, 62994]
+  DELIVERED_STATUSES = [11, 93]
+
   def active_rentals
     Rental.all.filter(&:active?)
   end
 
   def update_status(rental)
-    puts "Updating rental #{rental.id}"
+    parcel_status = send_cloud.get_parcel_status(rental.parcel_id)
+    return_status = send_cloud.get_parcel_status(rental.return_id)
+
+    puts "Updating rental #{rental.id}. Rental status: #{rental.status}. Parcel status: #{parcel_status}. Return status: #{return_status}"
+
     case rental.status.to_sym
     when :to_be_sent
-      rental.send! if rental_sent?(rental)
+      if rental_sent?(parcel_status)
+        rental.send! 
+        puts "Rental #{rental.id} sent"
+      end
     when :sent
-      rental.deliver! if rental_delivered?(rental)
+      if rental_delivered?(parcel_status)
+        rental.deliver! 
+        puts "Rental #{rental.id} delivered"
+      end
     when :delivered
-      rental.to_be_returned! if rental_due?(rental)
+      if rental_due?(rental)
+        rental.to_be_returned! 
+        puts "Rental #{rental.id} due"
+      end
     when :to_be_returned
-      rental.late! if rental_late?(rental)
-      rental.returned! if rental_returned?(rental)
+      if rental_returned?(return_status)
+        rental.returned! 
+        puts "Rental #{rental.id} returned"
+      elsif rental_late?(rental)
+        rental.late! 
+        puts "Rental #{rental.id} late"
+      end
     end
   end
 
-  def rental_sent?(rental)
-    sent = rand(0..1) == 1 ? true : false
-    puts "Rental sent? #{rental.id} #{sent}"
-    sent
+  def rental_sent?(parcel_status)
+    SENT_STATUSES.include?(parcel_status['id'])
   end
 
-  def rental_delivered?(rental)
-    delivered = rand(0..1) == 1 ? true : false
-    puts "Rental delivered? #{rental.id} #{delivered}"
-    delivered
+  def rental_delivered?(parcel_status)
+    DELIVERED_STATUSES.include?(parcel_status['id'])
   end
 
   def rental_due?(rental)
     due_at = rental.created_at + 1.month - 5.days
-    puts "Rental due at? #{rental.id} #{due_at}"
     due_at < Time.now
   end
 
   def rental_late?(rental)
     late_at = rental.created_at + 1.month + 2.days
-    puts "Rental late at? #{rental.id} #{late_at}"
     late_at < Time.now
   end
 
-  def rental_returned?(rental)
-    returned = rand(0..1) == 1 ? true : false
-    puts "Rental returned? #{rental.id} #{returned}"
-    returned
+  def rental_returned?(return_status)
+    DELIVERED_STATUSES.include?(return_status['id'])
+  end
+
+  def send_cloud
+    @client ||= SendCloud::Client.new
   end
 end
