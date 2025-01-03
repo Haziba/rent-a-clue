@@ -35,4 +35,18 @@ class SendCloud::Client
 
     response.body
   end
+
+  def shipping_methods(is_return:)
+    uri = URI("#{BASE_URL}/shipping_methods?is_return=#{is_return ? 'true' : 'false'}")
+
+    request = Net::HTTP::Get.new(uri)
+    request.basic_auth(@api_key, @api_secret)
+    request.content_type = 'application/json'
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+
+    JSON.parse(response.body)
+  end
 end

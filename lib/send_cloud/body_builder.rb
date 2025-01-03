@@ -27,11 +27,7 @@ class SendCloud::BodyBuilder
         "height": "16",
         "total_order_value": "40",
         "total_order_value_currency": "GBP",
-        "shipment":
-        {
-            "id": 4969,
-            "name": "Evri Standard Delivery 0-1kg"
-        },
+        "shipment": SendCloud::ShipmentNameGetter.get_parcel_name,
         "total_insured_value": 0,
         "sender_address": 611278,
         "quantity": 1,
@@ -79,11 +75,7 @@ class SendCloud::BodyBuilder
           "height": "16",
           "total_order_value": "40",
           "total_order_value_currency": "GBP",
-          "shipment":
-          {
-              "id": 7052,
-              "name": "Evri C2C Collection Return Standard Delivery 0-1kg"
-          },
+          "shipment": SendCloud::ShipmentNameGetter.get_return_name,
           "total_insured_value": 0,
           "quantity": 1,
           "is_return": true,
