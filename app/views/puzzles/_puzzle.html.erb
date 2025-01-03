@@ -1,6 +1,11 @@
-<div class="bg-white shadow-md rounded-lg p-4">
-  <h2 class="text-lg font-semibold text-center mb-2"><%= puzzle.name %></h2>
-  <div class="flex justify-center">
-    <%= image_tag url_for(puzzle.image), alt: puzzle.name, class: "rounded-lg w-full max-h-64 object-cover" %>
-  </div>
+<div class="bg-white shadow-md hover:shadow-lg transition-shadow rounded-lg p-4 relative pb-16 <%= small ? 'w-56' : nil %>">
+  <%= image_tag url_for(puzzle.image), alt: puzzle.name, class: "rounded-lg mb-4" %>
+  <h2 class="text-xl font-semibold mb-2 text-center"><%= puzzle.name %></h2>
+  <p class="text-gray-600 mb-4"><%= "#{puzzle.description[0, [10, puzzle.description.length].min]}..." %></p>
+  <% if user_completed_puzzle?(puzzle: puzzle) %>
+    <p class="text-sm text-gray-500">Rented on: <span class="font-medium">Jan 1, 2025</span></p>
+  <% end %>
+  <a href="/trials-of-camelot" class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition absolute bottom-0 right-0 mb-4 mr-4">
+    Learn More
+  </a>
 </div>
