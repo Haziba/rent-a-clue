@@ -3,6 +3,6 @@
   <td class="px-4 py-2"><%= inventory.condition %></td>
   <td class="px-4 py-2"><span class="text-gray-600"><%= inventory.last_rental ? inventory.last_rental.status.titleize : "-" %></span></td>
   <td class="px-4 py-2">
-    <button class="text-blue-600 hover:underline">View</button>
+    <%= link_to "View", admin_inventory_path(inventory), class: 'text-blue-600 hover:underline' %>
   </td>
 </tr>

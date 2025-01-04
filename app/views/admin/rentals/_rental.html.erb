@@ -1,7 +1,9 @@
 <tr id="<%= dom_id rental %>">
-  <td class="px-6 py-4"><%= rental.inventory.puzzle.name %></td>
-  <td class="px-6 py-4"><%= rental.created_at %></td>
-  <td class="px-6 py-4"><%= rental.status %></td>
-  <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
+  <td class="px-4 py-2"><%= rental.inventory.puzzle.name %></td>
+  <td class="px-4 py-2"><%= rental.created_at %></td>
+  <td class="px-4 py-2"><%= rental.status %></td>
+  <td class="px-4 py-2"><%= rental.last_status_update_at %></td>
+  <td class="px-4 py-2">
+    <%= link_to "View", admin_rental_path(rental), class: 'text-blue-600 hover:underline' %>
+  </td>
 </tr>
-

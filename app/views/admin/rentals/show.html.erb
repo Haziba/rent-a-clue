@@ -1,2 +1,33 @@
-<h1>Rentals#show</h1>
-<p>Find me in app/views/rentals/show.html.erb</p>
+<% provide(:title, "Rental - #{@rental.puzzle.name}") %>
+
+<p style="color: green"><%= notice %></p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <section class="bg-white shadow rounded-lg p-6 relative">
+    <div class="flex justify-content mb-4">
+      <h2 class="text-lg font-bold flex-grow">Rental</h2>
+    </div>
+    <div class="space-y-2">
+      <p><span class="font-semibold">Puzzle:</span> <%= link_to @rental.puzzle.name, admin_puzzle_path(@rental.puzzle) %></p>
+      <p><span class="font-semibold">User:</span> <%= link_to @rental.user.email, admin_user_path(@rental.user) %></p>
+      <p><span class="font-semibold">Created at:</span> <%= @rental.created_at %></p>
+    </div>
+  </section>
+
+  <section class="bg-white shadow rounded-lg p-6 md:col-span-2">
+    <div class="flex justify-between mb-4">
+      <h2 class="text-lg font-bold">History</h2>
+    </div>
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Status</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Updated at</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <%= render @rental.rental_update_logs %>
+      </tbody>
+    </table>
+  </section>
+</div>

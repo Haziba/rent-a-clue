@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :puzzles do
       resources :inventory
     end
+    resources :rentals
     get '/parcels/labels' => 'parcels#labels'
   end
 

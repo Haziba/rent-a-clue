@@ -47,6 +47,10 @@ class Rental < ApplicationRecord
     update(status: :lost)
   end
 
+  def puzzle
+    inventory.puzzle
+  end
+
   private
 
   def update_last_status_update_at
