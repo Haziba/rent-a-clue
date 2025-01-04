@@ -1,0 +1,16 @@
+<div class="max-w-4xl mx-auto p-6 grid grid-cols-2 gap-6">
+  <section class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-lg font-bold"><%= @puzzle.name %></h2>
+    <div class="space-y-2">
+      <p><span class="font-semibold">Brand:</span> <%= @puzzle.brand %></p>
+      <p><span class="font-semibold">Description:</span> <%= @puzzle.description %></p>
+    </div>
+  </section>
+
+  <section class="bg-white shadow rounded-lg p-6">
+    <% if @puzzle.image.attached? %>
+      <%= image_tag url_for(@puzzle.image), class: 'rounded-lg w-full' %>
+    <% end %>
+  </section>
+
+</div>

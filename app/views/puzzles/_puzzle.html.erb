@@ -5,7 +5,7 @@
   <% if user_completed_puzzle?(puzzle: puzzle) %>
     <p class="text-sm text-gray-500">Rented on: <span class="font-medium">Jan 1, 2025</span></p>
   <% end %>
-  <a href="/trials-of-camelot" class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition absolute bottom-0 right-0 mb-4 mr-4">
+  <%= link_to puzzle_path(puzzle), class: "mt-4 inline-block px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition absolute bottom-0 right-0 mb-4 mr-4" do %>
     Learn More
-  </a>
+  <% end %>
 </div>
