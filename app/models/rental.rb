@@ -2,10 +2,13 @@ class Rental < ApplicationRecord
   belongs_to :user
   belongs_to :subscription
   belongs_to :inventory
+  has_many :rental_update_logs
 
   validate :user_has_contact
 
   before_save :update_last_status_update_at, if: :will_save_change_to_status?
+  after_save :create_rental_update_log!, if: :saved_change_to_status?
+
   after_create_commit :perform_send_cloud_actions!
 
   enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7 }
@@ -48,6 +51,10 @@ class Rental < ApplicationRecord
 
   def update_last_status_update_at
     self.last_status_update_at = Time.current
+  end
+
+  def create_rental_update_log!
+    rental_update_logs.create!(status: status)
   end
 
   def perform_send_cloud_actions!
