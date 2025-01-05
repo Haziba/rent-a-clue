@@ -1,8 +1,14 @@
 class Admin::RentalsController < Admin::ApplicationController
   before_action :authenticate_admin!
-  before_action :set_rental, only: [:show]
+  before_action :set_rental, only: [:show, :review]
 
   def show
+  end
+
+  def review
+  end
+
+  def submit_review
   end
 
   private

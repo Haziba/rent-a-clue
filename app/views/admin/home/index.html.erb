@@ -40,6 +40,35 @@
     </div>
 
     <!-- Table -->
+    <div class="bg-white shadow rounded-lg mb-6">
+    <div class="p-6 border-b border-gray-200 flex justify-between">
+        <h3 class="text-gray-700 text-lg font-medium">Returns to be reviewed</h3>
+    </div>
+    <table class="min-w-full text-left divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+        <tr>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Customer</th>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Puzzle</th>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Send Date</th>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+        <% @to_be_reviewed_rentals.each do |rental| %>
+            <tr>
+                <td class="px-6 py-4"><%= link_to rental.user.email, admin_user_path(rental.user) %></td>
+                <td class="px-6 py-4"><%= link_to rental.inventory.puzzle.name, admin_puzzle_path(rental.inventory.puzzle) %></td>
+                <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
+                <td class="px-6 py-4">
+                    <%= link_to "Review", admin_rental_review_path(rental), class: 'bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700' %>
+                </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    </div>
+
+    <!-- Table -->
     <div class="bg-white shadow rounded-lg">
     <div class="p-6 border-b border-gray-200">
         <h3 class="text-gray-700 text-lg font-medium">Orders recently updated</h3>

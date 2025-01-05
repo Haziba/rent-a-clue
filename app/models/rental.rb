@@ -11,10 +11,10 @@ class Rental < ApplicationRecord
 
   after_create_commit :perform_send_cloud_actions!
 
-  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7 }
+  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, return_approved: 8 }
 
   def active?
-    !(returned? || lost?)
+    !(return_approved? || lost?)
   end
 
   def send!
@@ -45,6 +45,11 @@ class Rental < ApplicationRecord
   def lost!
     throw 'Rental not ready to be lost' unless to_be_returned? || late?
     update(status: :lost)
+  end
+
+  def approve_return!
+    throw 'Rental not ready to be approved' unless returned?
+    update(status: :return_approved)
   end
 
   def puzzle

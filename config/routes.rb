@@ -31,7 +31,10 @@ Rails.application.routes.draw do
     resources :puzzles do
       resources :inventory
     end
-    resources :rentals
+    resources :rentals do
+      get :review
+      post :submit_review
+    end
     get '/parcels/labels' => 'parcels#labels'
   end
 
