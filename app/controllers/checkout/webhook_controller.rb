@@ -37,20 +37,34 @@ class Checkout::WebhookController < ApplicationController
       # Payment is successful and the subscription is created.
       # You should provision the subscription and save the customer ID to your database.
       stripe_session = StripeSession.find_by(session_id: data_object['id'])
-      stripe_session.user.update!(stripe_customer_id: data_object['customer'])
-      Subscription.create!(user: stripe_session.user, stripe_subscription_id: data_object['subscription'], active: false)
-    when 'invoice.paid'
-      # Continue to provision the subscription as payments continue to be made.
-      # Store the status in your database and check when a user accesses your service.
-      # This approach helps you avoid hitting rate limits.
-      subscription = Subscription.find_by(stripe_subscription_id: data_object['subscription'])
-      subscription.update!(active: true, last_payment_date: Time.now)
-    when 'invoice.payment_failed'
+
+      Stripe.api_key = 'sk_test_51QcVxsFqOwmU7NyiSpH03RjXsAipNo5mUwyNMi1sAGlYrDbbUdWkwshqReNIkU255M1vqgKDYZGa96MCDX5lz4CW00Um7JgA9i'
+
+      payment_method = Stripe::Client.new.get_payment_method(setup_intent_id: data_object['setup_intent'])
+
+      if stripe_session.user.stripe_customer_id.nil?
+        customer = Stripe::Client.new.create_customer(user: stripe_session.user)
+        stripe_session.user.update!(stripe_customer_id: customer)
+      end
+
+      Stripe::Client.new.attach_payment_method(payment_method: payment_method, customer: stripe_session.user.stripe_customer_id)
+
+      Subscription.create!(user: stripe_session.user, stripe_payment_method_id: payment_method, last_payment_date: Time.now, active: true)
+    when 'payment_intent.succeeded'
+      puts "Payment received"
+      rental = Rental.find_by(stripe_payment_intent_id: data_object['id'])
+      rental.receive_payment!
+    when 'payment_intent.payment_failed'
+      puts "Payment failed"
       # The payment failed or the customer does not have a valid payment method.
       # The subscription becomes past_due. Notify your customer and send them to the
       # customer portal to update their payment information.
-      subscription = Subscription.find_by(stripe_subscription_id: data_object['subscription'])
-      subscription.update!(active: false)
+      rental = Rental.find_by(stripe_payment_intent_id: data_object['id'])
+      rental.refused_payment!
+      rental.subscription.mark_inactive!
+    # when 'payment_method.detached'
+    #   puts "Payment method detached - #{data_object['id']}"
+    #   Subscription.find_by(stripe_customer_id: data_object['id']).mark_invalid_payment_method!
     else
       puts "Unhandled event type: #{event.type}"
     end

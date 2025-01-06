@@ -18,6 +18,6 @@ class User < ApplicationRecord
   end
 
   def eligible_for_new_rental?
-    contact.present? && rentals.filter(&:active?).empty?
+    subscription.present? && contact.present? && rentals.filter(&:active?).empty? && (rentals.empty? || rentals.last.created_at >= 1.month.ago)
   end
 end

@@ -1,9 +1,14 @@
 class Subscription < ApplicationRecord
   belongs_to :user
-  validate :only_one_active_subscription_per_user
+  has_many :rentals, dependent: :destroy
+  before_create :only_one_active_subscription_per_user
 
   def next_payment_date
     last_payment_date.nil? ? Date.tomorrow : last_payment_date + 1.month
+  end
+
+  def mark_inactive!
+    update!(active: false, stripe_payment_method_id: nil)
   end
 
   private

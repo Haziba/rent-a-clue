@@ -16,7 +16,7 @@ namespace :rentals do
 
     puts "Creating rental for user #{user.id} and inventory #{inventory.puzzle.name} (#{inventory.id})"
 
-    user.rentals.create!(inventory: inventory, subscription: user.subscription, status: :to_be_sent)
+    user.rentals.create!(inventory: inventory, subscription: user.subscription, status: :payment_requested)
   end
 
   def eligible_users

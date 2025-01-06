@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_04_121114) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_06_133403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_04_121114) do
     t.datetime "last_status_update_at"
     t.integer "parcel_id"
     t.integer "return_id"
+    t.string "stripe_payment_intent_id"
     t.index ["inventory_id"], name: "index_rentals_on_inventory_id"
     t.index ["subscription_id"], name: "index_rentals_on_subscription_id"
     t.index ["user_id"], name: "index_rentals_on_user_id"
@@ -123,6 +124,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_04_121114) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: false, null: false
     t.string "stripe_subscription_id"
+    t.string "stripe_payment_method_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
