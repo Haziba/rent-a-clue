@@ -18,7 +18,7 @@ class Rental < ApplicationRecord
   end
 
   def receive_payment!
-    throw 'Rental not ready to receive payment' unless payment_requested?
+    throw 'Rental not ready to receive payment' unless payment_requested? || payment_refused?
     update!(status: :to_be_sent)
     perform_send_cloud_actions!
   end
@@ -67,6 +67,15 @@ class Rental < ApplicationRecord
     inventory.puzzle
   end
 
+  def request_payment!
+    payment_id = Stripe::Client.new.request_payment(customer: user.stripe_customer_id, payment_method: user.subscription.stripe_payment_method_id)
+    update!(stripe_payment_intent_id: payment_id)
+  rescue => e
+    puts "Error requesting payment for rental `#{id}`: #{e.message}"
+    subscription.mark_inactive!
+    payment_refused!
+  end
+
   private
 
   def update_last_status_update_at
@@ -75,15 +84,6 @@ class Rental < ApplicationRecord
 
   def create_rental_update_log!
     rental_update_logs.create!(status: status)
-  end
-
-  def request_payment!
-    payment_id = Stripe::Client.new.request_payment(customer: user.stripe_customer_id, payment_method: user.subscription.stripe_payment_method_id)
-    update!(stripe_payment_intent_id: payment_id)
-  rescue => e
-    puts "Error requesting payment for rental `#{id}`: #{e.message}"
-    subscription.mark_inactive!
-    payment_refused!
   end
 
   def perform_send_cloud_actions!

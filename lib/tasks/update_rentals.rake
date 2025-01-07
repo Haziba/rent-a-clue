@@ -12,12 +12,18 @@ namespace :rentals do
   end
 
   def update_status(rental)
-    parcel_status = send_cloud.get_parcel_status(rental.parcel_id)
-    return_status = send_cloud.get_parcel_status(rental.return_id)
+    parcel_status = rental.parcel_id.present? ? send_cloud.get_parcel_status(rental.parcel_id) : nil
+    return_status = rental.return_id.present? ? send_cloud.get_parcel_status(rental.return_id) : nil
 
     puts "Updating rental #{rental.id}. Rental status: #{rental.status}. Parcel status: #{parcel_status}. Return status: #{return_status}"
 
     case rental.status.to_sym
+    when :payment_refused
+      if rental.user.subscription.present?
+        rental.update(subscription: rental.user.subscription)
+        puts "Requesting payment for rental #{rental.id}"
+        rental.request_payment!
+      end
     when :to_be_sent
       if rental_sent?(parcel_status)
         rental.send! 
