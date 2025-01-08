@@ -1,5 +1,4 @@
 class Admin::PuzzlesController < Admin::ApplicationController
-  before_action :authenticate_admin!
   before_action :set_puzzle, only: %i[ show edit update destroy ]
 
   # GET /puzzles or /puzzles.json

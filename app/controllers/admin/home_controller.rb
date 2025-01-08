@@ -1,6 +1,4 @@
 class Admin::HomeController < Admin::ApplicationController
-  before_action :authenticate_admin!
-
   def index
     @user_counts = {
       total: User.count,

@@ -1,5 +1,4 @@
 class Admin::InventoryController < Admin::ApplicationController
-  before_action :authenticate_admin!
   before_action :set_inventory, only: %i[ show edit update destroy ]
   before_action :set_puzzle, only: %i[ new create edit update show ]
   before_action :set_puzzles, only: %i[ new create edit update ]
