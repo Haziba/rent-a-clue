@@ -32,8 +32,7 @@ Rails.application.routes.draw do
       resources :inventory
     end
     resources :rentals do
-      get :review
-      post :submit_review
+      resource :reviews, controller: 'rental_reviews'
     end
     get '/parcels/labels' => 'parcels#labels'
   end

@@ -1,0 +1,21 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <% content_for :title, "Rental reviews" %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Rental reviews</h1>
+    <%= link_to "New rental review", new_rental_review_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  </div>
+
+  <div id="rental_reviews" class="min-w-full">
+    <% @rental_reviews.each do |rental_review| %>
+      <%= render rental_review %>
+      <p>
+        <%= link_to "Show this rental review", rental_review, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      </p>
+    <% end %>
+  </div>
+</div>

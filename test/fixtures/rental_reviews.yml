@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rental: one
+  condition: 1
+  details: MyString
+
+two:
+  rental: two
+  condition: 1
+  details: MyString

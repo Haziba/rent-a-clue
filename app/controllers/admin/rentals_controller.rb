@@ -4,12 +4,6 @@ class Admin::RentalsController < Admin::ApplicationController
   def show
   end
 
-  def review
-  end
-
-  def submit_review
-  end
-
   private
 
   def set_rental

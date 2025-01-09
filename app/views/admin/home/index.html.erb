@@ -60,7 +60,7 @@
                 <td class="px-6 py-4"><%= link_to rental.inventory.puzzle.name, admin_puzzle_path(rental.inventory.puzzle) %></td>
                 <td class="px-6 py-4"><%= rental.last_status_update_at %></td>
                 <td class="px-6 py-4">
-                    <%= link_to "Review", admin_rental_review_path(rental), class: 'bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700' %>
+                    <%= link_to "Review", new_admin_rental_reviews_path(rental), class: 'bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700' %>
                 </td>
             </tr>
         <% end %>

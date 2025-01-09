@@ -3,6 +3,7 @@ class Rental < ApplicationRecord
   belongs_to :subscription
   belongs_to :inventory
   has_many :rental_update_logs, dependent: :destroy
+  has_one :review, dependent: :destroy, class_name: 'RentalReview'
 
   validate :user_has_contact
 
@@ -11,10 +12,10 @@ class Rental < ApplicationRecord
 
   after_create_commit :request_payment!
 
-  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, return_approved: 8, payment_requested: 9, payment_refused: 10 }
+  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, return_reviewed: 8, payment_requested: 9, payment_refused: 10 }
 
   def active?
-    !(return_approved? || lost?)
+    !(return_reviewed? || lost?)
   end
 
   def receive_payment!
@@ -58,9 +59,9 @@ class Rental < ApplicationRecord
     update(status: :lost)
   end
 
-  def approve_return!
-    throw 'Rental not ready to be approved' unless returned?
-    update(status: :return_approved)
+  def review_return!
+    throw 'Rental not ready to be reviewed' unless returned?
+    update(status: :return_reviewed)
   end
 
   def puzzle
