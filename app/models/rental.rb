@@ -60,7 +60,7 @@ class Rental < ApplicationRecord
   end
 
   def review_return!
-    throw 'Rental not ready to be reviewed' unless returned?
+    #throw 'Rental not ready to be reviewed' unless returned?
     update(status: :return_reviewed)
   end
 

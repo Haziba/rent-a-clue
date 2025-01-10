@@ -32,7 +32,9 @@ Rails.application.routes.draw do
       resources :inventory
     end
     resources :rentals do
-      resource :reviews, controller: 'rental_reviews'
+      resource :reviews, controller: 'rental_reviews' do
+        resource :fines
+      end
     end
     get '/parcels/labels' => 'parcels#labels'
   end

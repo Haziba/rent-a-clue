@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_07_193230) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_09_170915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_193230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_contacts_on_user_id"
+  end
+
+  create_table "fines", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "rental_review_id", null: false
+    t.decimal "amount"
+    t.integer "reason"
+    t.string "stripe_payment_intent_id"
+    t.boolean "paid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rental_review_id"], name: "index_fines_on_rental_review_id"
   end
 
   create_table "inventories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -153,6 +164,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_193230) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contacts", "users"
+  add_foreign_key "fines", "rental_reviews"
   add_foreign_key "inventories", "puzzles"
   add_foreign_key "rental_reviews", "rentals"
   add_foreign_key "rental_update_logs", "rentals"

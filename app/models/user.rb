@@ -18,6 +18,12 @@ class User < ApplicationRecord
   end
 
   def eligible_for_new_rental?
-    subscription.present? && contact.present? && rentals.filter(&:active?).empty? && (rentals.empty? || rentals.last.created_at >= 1.month.ago)
+    return false unless subscription.present? 
+    return false unless contact.present?
+    return false if rentals.filter(&:active?).any
+    return false unless (rentals.empty? || rentals.last.created_at >= 1.month.ago)
+    return false if rentals.joins(:reviews).where(reviews: { fines: { paid: false } }).exists?
+
+    true
   end
 end

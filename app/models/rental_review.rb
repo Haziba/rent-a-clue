@@ -1,5 +1,6 @@
 class RentalReview < ApplicationRecord
   belongs_to :rental
+  has_one :fine
 
   has_many_attached :images
 

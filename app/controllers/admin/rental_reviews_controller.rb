@@ -25,12 +25,17 @@ class Admin::RentalReviewsController < Admin::ApplicationController
   # POST /rental_reviews or /rental_reviews.json
   def create
     @rental_review = RentalReview.new(rental_review_params.merge(rental_id: @rental.id))
-    pp @rental_review
+    pp params
 
     respond_to do |format|
       if @rental_review.save
-        format.html { redirect_to admin_root_path, notice: "Rental review was successfully created." }
-        format.json { render :show, status: :created, location: @rental_review }
+        if params[:result] == 'Pass'
+          format.html { redirect_to admin_root_path, notice: "Rental review was successfully created." }
+          format.json { render :show, status: :created, location: @rental_review }
+        else
+          format.html { redirect_to new_admin_rental_reviews_fines_path(rental_id: @rental.id), notice: "Rental review was successfully created." }
+          format.json { render :show, status: :created, location: @rental_review }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @rental_review.errors, status: :unprocessable_entity }
@@ -81,6 +86,6 @@ class Admin::RentalReviewsController < Admin::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def rental_review_params
-      params.require(:rental_review).permit(:rental_id, :condition, :details, images: [])
+      params.require(:rental_review).permit(:rental_id, :condition, :details, :result, images: [])
     end
 end
