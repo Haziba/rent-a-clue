@@ -69,7 +69,7 @@ class Rental < ApplicationRecord
   end
 
   def request_payment!
-    payment_id = Stripe::Client.new.request_payment(customer: user.stripe_customer_id, payment_method: user.subscription.stripe_payment_method_id)
+    payment_id = Stripe::Client.new.request_payment(amount: 1499, customer: user.stripe_customer_id, payment_method: user.subscription.stripe_payment_method_id)
     update!(stripe_payment_intent_id: payment_id)
   rescue => e
     puts "Error requesting payment for rental `#{id}`: #{e.message}"

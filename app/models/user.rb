@@ -20,10 +20,14 @@ class User < ApplicationRecord
   def eligible_for_new_rental?
     return false unless subscription.present? 
     return false unless contact.present?
-    return false if rentals.filter(&:active?).any
+    return false if rentals.filter(&:active?).any?
     return false unless (rentals.empty? || rentals.last.created_at >= 1.month.ago)
-    return false if rentals.joins(:reviews).where(reviews: { fines: { paid: false } }).exists?
+    return false if fines.any? { |fine| !fine.paid }
 
     true
+  end
+
+  def fines
+    rentals.map(&:review).compact.map(&:fine).compact
   end
 end

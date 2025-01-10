@@ -14,6 +14,32 @@
     </div>
   </section>
 
+  <% if @rental.review.present? %>
+    <section class="bg-white shadow rounded-lg p-6 relative">
+      <div class="flex justify-content mb-4">
+        <h2 class="text-lg font-bold flex-grow">Review</h2>
+      </div>
+      <div class="space-y-2">
+        <p><span class="font-semibold">Condition:</span> <%= @rental.review.condition %></p>
+        <p><span class="font-semibold">Details:</span> <%= @rental.review.details %></p>
+        <p><span class="font-semibold">Reviewed at:</span> <%= @rental.review.created_at %></p>
+      </div>
+    </section>
+
+    <% if @rental.review.fine.present? %>
+      <section class="<%= @rental.review.fine.paid ? 'bg-white' : 'bg-red-600 text-white' %> shadow rounded-lg p-6 relative">
+        <div class="flex justify-content mb-4">
+          <h2 class="text-lg font-bold flex-grow">Fine</h2>
+        </div>
+        <div class="space-y-2">
+          <p><span class="font-semibold">Amount:</span> <%= number_to_currency(@rental.review.fine.amount, unit: "£") %></p>
+          <p><span class="font-semibold">Reason:</span> <%= @rental.review.fine.reason %></p>
+          <p><span class="font-semibold">Paid:</span> <%= @rental.review.fine.paid ? 'Yes' : 'No' %></p>
+        </div>
+      </section>
+    <% end %>
+  <% end %>
+
   <section class="bg-white shadow rounded-lg p-6 md:col-span-2">
     <div class="flex justify-between mb-4">
       <h2 class="text-lg font-bold">History</h2>

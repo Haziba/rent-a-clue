@@ -22,7 +22,7 @@ class Admin::FinesController < Admin::ApplicationController
 
   # POST /fines or /fines.json
   def create
-    @fine = Fine.new(fine_params.merge(rental_review_id: @rental_review.id))
+    @fine = Fine.new(fine_params.merge(rental_review_id: @rental_review.id, status: :pending))
 
     respond_to do |format|
       if @fine.save

@@ -18,6 +18,11 @@ Rails.application.routes.draw do
   resource :account
   resource :contact
   resources :puzzles, only: %i[index show]
+  resources :fines, only: [] do
+    member do
+      post 'pay' => 'fines#pay'
+    end
+  end
 
   post '/checkout/session/create' => 'checkout/session#create'
   get '/checkout/session/:session_id/success' => 'checkout/session#success'

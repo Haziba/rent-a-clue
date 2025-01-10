@@ -51,9 +51,12 @@ class Checkout::WebhookController < ApplicationController
 
       Subscription.create!(user: stripe_session.user, stripe_payment_method_id: payment_method, last_payment_date: Time.now, active: true)
     when 'payment_intent.succeeded'
-      puts "Payment received"
+      puts "Payment received - #{data_object['id']}"
       rental = Rental.find_by(stripe_payment_intent_id: data_object['id'])
-      rental.receive_payment!
+      rental.receive_payment! if rental.present?
+
+      fine = Fine.find_by(stripe_payment_intent_id: data_object['id'])
+      fine.pay! if fine.present?
     when 'payment_intent.payment_failed'
       puts "Payment failed"
       # The payment failed or the customer does not have a valid payment method.

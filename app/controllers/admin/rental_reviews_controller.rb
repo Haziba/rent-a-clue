@@ -47,8 +47,13 @@ class Admin::RentalReviewsController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @rental_review.update(rental_review_params)
-        format.html { redirect_to admin_root_path, notice: "Rental review was successfully updated." }
-        format.json { render :show, status: :ok, location: @rental_review }
+        if params[:result] == 'Pass'
+          format.html { redirect_to admin_root_path, notice: "Rental review was successfully updated." }
+          format.json { render :show, status: :created, location: @rental_review }
+        else
+          format.html { redirect_to new_admin_rental_reviews_fines_path(rental_id: @rental.id), notice: "Rental review was successfully updated." }
+          format.json { render :show, status: :created, location: @rental_review }
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @rental_review.errors, status: :unprocessable_entity }

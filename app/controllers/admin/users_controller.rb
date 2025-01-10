@@ -9,6 +9,7 @@ class Admin::UsersController < Admin::ApplicationController
   # GET /admin/users/1 or /admin/users/1.json
   def show
     @rentals = @user.rentals.order(last_status_update_at: :desc)
+    @fines = @user.fines
   end
 
   # GET /admin/users/new

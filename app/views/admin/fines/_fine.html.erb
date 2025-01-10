@@ -1,17 +1,7 @@
-<div id="<%= dom_id fine %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Rental reviews:</strong>
-    <%= fine.rental_reviews_id %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Amount:</strong>
-    <%= fine.amount %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Reason:</strong>
-    <%= fine.reason %>
-  </p>
-
-</div>
+<tr id="<%= dom_id fine %>">
+  <td class="px-4 py-2"><%= link_to fine.review.rental.puzzle.name, admin_rental_path(fine.review.rental) %></td>
+  <td class="px-4 py-2"><%= fine.amount %></td>
+  <td class="px-4 py-2"><%= fine.reason.titleize %></td>
+  <td class="px-4 py-2"><%= fine.status.titleize %></td>
+  <td class="px-4 py-2"><%= fine.updated_at %></td>
+</tr>

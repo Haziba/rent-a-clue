@@ -28,4 +28,22 @@
       </tbody>
     </table>
   </section>
+
+  <section class="bg-white shadow rounded-lg p-6 md:col-span-2">
+    <h2 class="text-lg font-bold mb-4">Fines</h2>
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Rental</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Amount</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Reason</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Status</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-500">Last status update at</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <%= render @fines %>
+      </tbody>
+    </table>
+  </section>
 </div>

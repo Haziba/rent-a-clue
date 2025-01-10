@@ -40,9 +40,9 @@ class Stripe::Client
     )
   end
 
-  def request_payment(customer:, payment_method:)
+  def request_payment(amount:, customer:, payment_method:)
     Stripe::PaymentIntent.create({
-      amount: 1499,
+      amount: amount,
       currency: 'gbp',
       customer: customer,
       payment_method: payment_method,
