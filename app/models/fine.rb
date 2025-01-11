@@ -6,7 +6,7 @@ class Fine < ApplicationRecord
 
   def pay!
     throw 'Fine not ready to be paid' unless pending?
-    update!(paid: true, status: :paid)
+    update!(status: :paid)
   end
 
   def unpaid?

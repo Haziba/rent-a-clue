@@ -22,7 +22,7 @@ class User < ApplicationRecord
     return false unless contact.present?
     return false if rentals.filter(&:active?).any?
     return false unless (rentals.empty? || rentals.last.created_at >= 1.month.ago)
-    return false if fines.any? { |fine| !fine.paid }
+    return false if fines.any? { |fine| fine.unpaid? }
 
     true
   end
