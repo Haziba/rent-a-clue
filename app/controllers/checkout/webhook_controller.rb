@@ -2,7 +2,7 @@ class Checkout::WebhookController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    webhook_secret = 'whsec_2ab28893814a42536c26d2925959302c25595ee49127c1a016a55ec0320f25fd'
+    webhook_secret = ENV['STRIPE_WEBHOOK_SECRET']
     payload = request.body.read
     if !webhook_secret.empty?
       # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
