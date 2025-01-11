@@ -14,7 +14,7 @@ class Checkout::SessionController < ApplicationController
   def show
     Stripe.api_key = 'sk_test_51QcVxsFqOwmU7NyiSpH03RjXsAipNo5mUwyNMi1sAGlYrDbbUdWkwshqReNIkU255M1vqgKDYZGa96MCDX5lz4CW00Um7JgA9i'
 
-    return_url = 'http://localhost:3000'
+    return_url = ENV['DOMAIN']
     customer_id = '{{CUSTOMER_ID}}'
 
     session = Stripe::BillingPortal::Session.create({
