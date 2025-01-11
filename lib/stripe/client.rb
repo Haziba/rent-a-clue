@@ -5,8 +5,8 @@ class Stripe::Client
 
   def create_checkout_session(user:)
     session = Stripe::Checkout::Session.create({
-      success_url: 'http://localhost:3000/checkout/session/{CHECKOUT_SESSION_ID}/success',
-      cancel_url: 'http://localhost:3000/checkout/session/{CHECKOUT_SESSION_ID}/cancel',
+      success_url: "#{ENV['DOMAIN']}/checkout/session/{CHECKOUT_SESSION_ID}/success",
+      cancel_url: "#{ENV['DOMAIN']}/checkout/session/{CHECKOUT_SESSION_ID}/cancel",
       mode: 'setup',
       currency: 'gbp'
     })

@@ -38,8 +38,6 @@ class Checkout::WebhookController < ApplicationController
       # You should provision the subscription and save the customer ID to your database.
       stripe_session = StripeSession.find_by(session_id: data_object['id'])
 
-      Stripe.api_key = 'sk_test_51QcVxsFqOwmU7NyiSpH03RjXsAipNo5mUwyNMi1sAGlYrDbbUdWkwshqReNIkU255M1vqgKDYZGa96MCDX5lz4CW00Um7JgA9i'
-
       payment_method = Stripe::Client.new.get_payment_method(setup_intent_id: data_object['setup_intent'])
 
       if stripe_session.user.stripe_customer_id.nil?
