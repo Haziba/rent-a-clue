@@ -1,6 +1,6 @@
 class Stripe::Client
   def initialize
-    Stripe.api_key = 'sk_test_51QcVxsFqOwmU7NyiSpH03RjXsAipNo5mUwyNMi1sAGlYrDbbUdWkwshqReNIkU255M1vqgKDYZGa96MCDX5lz4CW00Um7JgA9i'
+    Stripe.api_key = ENV['STRIPE_API_KEY']
   end
 
   def create_checkout_session(user:)
