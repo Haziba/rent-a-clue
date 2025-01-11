@@ -47,11 +47,18 @@ class Checkout::WebhookController < ApplicationController
 
       Stripe::Client.new.attach_payment_method(payment_method: payment_method, customer: stripe_session.user.stripe_customer_id)
 
-      Subscription.create!(user: stripe_session.user, stripe_payment_method_id: payment_method, last_payment_date: Time.now, active: true)
+      if(current_user.subscription)
+        current_user.subscription.mark_inactive!
+      else
+        Subscription.create!(user: stripe_session.user, stripe_payment_method_id: payment_method, last_payment_date: Time.now, active: true)
+      end
     when 'payment_intent.succeeded'
       puts "Payment received - #{data_object['id']}"
       rental = Rental.find_by(stripe_payment_intent_id: data_object['id'])
-      rental.receive_payment! if rental.present?
+      if rental.present?
+        rental.receive_payment!
+        rental.subscription.update!(last_payment_date: Time.now)
+      end
 
       fine = Fine.find_by(stripe_payment_intent_id: data_object['id'])
       fine.pay! if fine.present?

@@ -4,12 +4,16 @@ class Stripe::Client
   end
 
   def create_checkout_session(user:)
-    session = Stripe::Checkout::Session.create({
+    params = {
       success_url: "#{ENV['DOMAIN']}/checkout/session/{CHECKOUT_SESSION_ID}/success",
       cancel_url: "#{ENV['DOMAIN']}/checkout/session/{CHECKOUT_SESSION_ID}/cancel",
       mode: 'setup',
       currency: 'gbp'
-    })
+    }
+
+    params[:customer] = user.stripe_customer_id if user.stripe_customer_id.present?
+
+    session = Stripe::Checkout::Session.create(params)
 
     StripeSession.create!({
       user: user,
