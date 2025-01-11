@@ -1,13 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style>
-      /* Email styles need to be inline */
-    </style>
-  </head>
+<head>
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #1B1C3A;
+      color: #F4F4F4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background-color: #292B4B;
+      border-radius: 10px;
+    }
+    .header {
+      text-align: center;
+    }
+    .hero-image {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .cta-button {
+      display: inline-block;
+      margin: 20px 0;
+      padding: 15px 30px;
+      background-color: #E5C100;
+      color: #1B1C3A;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+    }
+    .footer a {
+      color: #E5C100;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔒 Rent a Clue</h1>
+      <p>Unlock the Mystery, One Box at a Time</p>
+    </div>
 
-  <body>
     <%= yield %>
-  </body>
+
+    <div class="footer">
+      <p>Contact us at <a href="mailto:hello@rentaclue.com">hello@rentaclue.com</a></p>
+      <p>Manage your subscription: <a href="<%= @url %>/account%>">Account Settings</a></p>
+    </div>
+  </div>
+</body>
 </html>

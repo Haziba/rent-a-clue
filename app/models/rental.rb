@@ -27,41 +27,50 @@ class Rental < ApplicationRecord
   def refused_payment!
     throw 'Rental not ready to refuse payment' unless payment_requested?
     update!(status: :payment_refused)
+    RentalMailer.payment_refused(rental: self).deliver_now
   end
 
   def send!
     throw 'Rental not ready to be sent' unless to_be_sent?
     update!(status: :sent)
+    RentalMailer.sent(rental: self).deliver_now
   end
 
   def deliver!
     throw 'Rental not ready to be delivered' unless sent?
     update(status: :delivered)
+    RentalMailer.delivered(rental: self).deliver_now
   end
 
   def to_be_returned!
     throw 'Rental not ready to be returned' unless delivered?
     update(status: :to_be_returned)
+    RentalMailer.to_be_returned(rental: self).deliver_now
   end
 
   def late!
     throw 'Rental not ready to be late' unless to_be_returned?
     update(status: :late)
+    RentalMailer.late(rental: self).deliver_now
   end
 
   def return!
     throw 'Rental not ready to be returned' unless to_be_returned?
     update(status: :returned)
+    RentalMailer.returned(rental: self).deliver_now
   end
 
   def lost!
     throw 'Rental not ready to be lost' unless to_be_returned? || late?
     update(status: :lost)
+    RentalMailer.lost(rental: self).deliver_now
   end
 
-  def review_return!
-    #throw 'Rental not ready to be reviewed' unless returned?
+  def review_return!(pass:)
+    throw 'Rental not ready to be reviewed' unless returned?
     update(status: :return_reviewed)
+    RentalMailer.return_approved(rental: self).deliver_now if pass
+    RentalMailer.return_denied(rental: self).deliver_now if !pass
   end
 
   def puzzle
