@@ -1,17 +1,8 @@
-<% if @fine.present? %>
-    <section class="bg-red-600 text-white shadow-md rounded-lg p-6 mb-6">
-        <h2 class="text-xl font-semibold mb-4">Fine to pay</h2>
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-lg font-medium">Fine: <span class="text-white"><%= number_to_currency(@fine.amount, unit: '£') %></span></p>
-                <p class="text-lg font-medium">Reason: <span class="text-white"><%= @fine.reason.titleize %></span></p>
-            </div>
-            <div class="px-4 py-2 bg-green-100 text-green-700 font-semibold rounded-full">
-                <%= button_to 'Pay', pay_fine_path(@fine), method: :post %>
-            </div>
-        </div>
-    </section>
-<% end %> 
+<%= turbo_stream_from @user %>
+
+<%= turbo_frame_tag "fine" do %>
+    <%= render @fine if @fine.present? %>
+<% end %>
 
 <section class="bg-white shadow-md rounded-lg p-6 mb-6">
     <h2 class="text-xl font-semibold mb-4">Subscription Status</h2>
