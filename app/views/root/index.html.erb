@@ -21,7 +21,9 @@
   <div class="relative">
     <!-- Carousel Wrapper -->
     <div class="overflow-x-auto whitespace-nowrap space-x-4 flex justify-center">
-      <%= render @puzzles, { small: true } %>
+      <% @puzzles.each_with_index do |puzzle, index| %>
+        <%= render partial: "puzzles/puzzle", locals: { puzzle: puzzle, index: index, small: true } %>
+      <% end %>
     </div>
   </div>
 </section>
