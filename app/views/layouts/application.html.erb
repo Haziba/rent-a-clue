@@ -21,7 +21,13 @@
 
       <!-- Footer -->
       <footer class="mt-12 text-center text-sm text-gray-600">
-        &copy; <%= Time.now.year %> Rent a Clue. All rights reserved.
+        <p>
+          <%= link_to 'Terms and Conditions', terms_and_conditions_path %> - <%= link_to 'Privacy Policy', privacy_policy_path %>
+        </p>
+
+        <p>
+          &copy; <%= Time.now.year %> Rent a Clue. All rights reserved.
+        </p>
       </footer>
     </div>
   </body>

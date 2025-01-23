@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     passwords: 'admins/passwords'
   }
 
+  get 'terms-and-conditions' => 'legal#terms_and_conditions', as: :terms_and_conditions
+  get 'privacy-policy' => 'legal#privacy_policy', as: :privacy_policy
+
   resources :subscriptions
   resources :rentals
   resource :account
