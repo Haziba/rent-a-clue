@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  validates :terms_of_service, acceptance: { message: 'must be accepted' }
+
   has_many :subscriptions, dependent: :destroy
   has_many :rentals, dependent: :destroy
   has_one :contact, dependent: :destroy
