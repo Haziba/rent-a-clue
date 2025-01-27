@@ -14,6 +14,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts/new
   def new
+    return redirect_to edit_contact_path if current_user.contact.present?
     @contact = Contact.new
   end
 
@@ -29,7 +30,7 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.save
         format.html { redirect_to account_path }
-        format.json { render :show, status: :created, location: @contact }
+        format.json { render json: { redirect_url: account_path }, status: :created }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @contact.errors, status: :unprocessable_entity }

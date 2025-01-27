@@ -30,4 +30,11 @@ class User < ApplicationRecord
   def fines
     rentals.map(&:review).compact.map(&:fine).compact
   end
+
+  def incomplete_account?
+    return true unless contact.present?
+    return true unless subscription.present?
+
+    false
+  end
 end

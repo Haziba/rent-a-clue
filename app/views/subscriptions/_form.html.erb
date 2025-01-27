@@ -1,5 +1,4 @@
-<%= subscription.inspect %>
-<%= form_with(model: subscription, id: 'subscription-form', html: { class: "space-y-6" }, data: { remote: true}) do |form| %>
+<div class="space-y-6">
   <% if subscription.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(subscription.errors.count, "error") %> prohibited this subscription from being saved:</h2>
@@ -12,5 +11,11 @@
     </div>
   <% end %>
 
-  <%= form.submit 'Subscribe', class: 'btn-primary float-right' %>
-<% end %>
+  <div class="w-100 text-center">
+    <form action="/checkout/session/create" method="POST" data-turbo="false">
+      <input type="hidden" name="priceId" value="price_1QcW4lFqOwmU7NyixKqqcqIU" />
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <button type="submit" class="mx-auto px-6 py-2 bg-green-600 hover:bg-green-900 text-white">Subscribe</button>
+    </form>
+  </div>
+</div>

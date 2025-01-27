@@ -1,4 +1,4 @@
-<%= form_with(model: contact, url: contact.new_record? ? contact_path : contact_path(contact), class: "space-y-6 bg-white p-8 rounded-lg shadow-md max-w-md mx-auto") do |form| %>
+<%= form_with(model: contact, url: contact_path, method: contact.new_record? ? :post : :patch, class: "space-y-6 bg-white p-8 rounded-lg shadow-md max-w-md mx-auto") do |form| %>
   <% if contact.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(contact.errors.count, "error") %> prohibited this contact from being saved:</h2>
@@ -41,7 +41,7 @@
     <%= form.text_field :postal_code, class: "w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500" %>
   </div>
 
-  <div class="inline">
-    <%= form.submit "Save Contact", class: "w-full px-6 py-3 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
+  <div class="inline mt-4">
+    <%= form.submit "Save Address", class: "w-full px-6 py-3 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
   </div>
 <% end %>

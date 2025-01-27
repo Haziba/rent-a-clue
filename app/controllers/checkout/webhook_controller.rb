@@ -47,8 +47,8 @@ class Checkout::WebhookController < ApplicationController
 
       Stripe::Client.new.attach_payment_method(payment_method: payment_method, customer: stripe_session.user.stripe_customer_id)
 
-      if(current_user.subscription)
-        current_user.subscription.mark_inactive!
+      if(stripe_session.user.subscription)
+        stripe_session.user.subscription.mark_inactive!
       else
         Subscription.create!(user: stripe_session.user, stripe_payment_method_id: payment_method, last_payment_date: Time.now, active: true)
       end
