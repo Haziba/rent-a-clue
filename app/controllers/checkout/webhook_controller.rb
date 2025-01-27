@@ -51,6 +51,7 @@ class Checkout::WebhookController < ApplicationController
         stripe_session.user.subscription.mark_inactive!
       else
         Subscription.create!(user: stripe_session.user, stripe_payment_method_id: payment_method, last_payment_date: Time.now, active: true)
+        CreateRentalService.new(user: stripe_session.user).call
       end
     when 'payment_intent.succeeded'
       puts "Payment received - #{data_object['id']}"
