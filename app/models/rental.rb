@@ -3,6 +3,8 @@ class Rental < ApplicationRecord
   belongs_to :subscription
   belongs_to :inventory
   has_many :rental_update_logs, dependent: :destroy
+  belongs_to :sent_parcel, class_name: 'Parcel', optional: true
+  belongs_to :return_parcel, class_name: 'Parcel', optional: true
   has_one :review, dependent: :destroy, class_name: 'RentalReview'
 
   validate :user_has_contact
@@ -86,6 +88,15 @@ class Rental < ApplicationRecord
     payment_refused!
   end
 
+  def show_tracking_link?
+    to_be_sent? || sent? || delivered? || to_be_returned? || late? || returned? || lost?
+  end
+
+  def tracking_link
+    return return_parcel.tracking_url if to_be_returned? || late? || returned? || lost?
+    sent_parcel.tracking_url
+  end
+
   private
 
   def update_last_status_update_at
@@ -97,17 +108,18 @@ class Rental < ApplicationRecord
   end
 
   def perform_send_cloud_actions!
-    parcel_id = create_parcel!
-    return_id = create_return!
-
-    update!(parcel_id: parcel_id, return_id: return_id)
+    update(sent_parcel: create_parcel!, return_parcel: create_return!)
   end
 
   def create_parcel!
     parcel_data = SendCloud::BodyBuilder.parcel_body(user: user)
 
     parcel = SendCloud::Client.new.create_parcel(parcel_data)
-    parcel['parcel']['id']
+
+    Parcel.create!({
+      send_cloud_id: parcel['parcel']['id'],
+      tracking_url: parcel['parcel']['tracking_url'],
+    })
   rescue StandardError => e
     puts "Error creating parcel: #{e.message} - #{parcel}"
   end
@@ -116,7 +128,10 @@ class Rental < ApplicationRecord
     parcel_data = SendCloud::BodyBuilder.return_body(user: user)
 
     parcel = SendCloud::Client.new.create_parcel(parcel_data)
-    parcel['parcel']['id']
+    Parcel.create!({
+      send_cloud_id: parcel['parcel']['id'],
+      tracking_url: parcel['parcel']['tracking_url'],
+    })
   rescue StandardError => e
     puts "Error creating return: #{e.message} - #{parcel}"
   end

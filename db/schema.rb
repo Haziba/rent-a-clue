@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_27_181632) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_27_213032) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,6 +88,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_181632) do
     t.index ["puzzle_id"], name: "index_inventories_on_puzzle_id"
   end
 
+  create_table "parcels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "send_cloud_id"
+    t.string "tracking_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "puzzles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "brand"
@@ -126,7 +133,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_181632) do
     t.integer "parcel_id"
     t.integer "return_id"
     t.string "stripe_payment_intent_id"
+    t.uuid "sent_parcel_id"
+    t.uuid "return_parcel_id"
     t.index ["inventory_id"], name: "index_rentals_on_inventory_id"
+    t.index ["return_parcel_id"], name: "index_rentals_on_return_parcel_id"
+    t.index ["sent_parcel_id"], name: "index_rentals_on_sent_parcel_id"
     t.index ["subscription_id"], name: "index_rentals_on_subscription_id"
     t.index ["user_id"], name: "index_rentals_on_user_id"
   end
@@ -173,6 +184,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_181632) do
   add_foreign_key "rental_reviews", "rentals"
   add_foreign_key "rental_update_logs", "rentals"
   add_foreign_key "rentals", "inventories"
+  add_foreign_key "rentals", "parcels", column: "return_parcel_id"
+  add_foreign_key "rentals", "parcels", column: "sent_parcel_id"
   add_foreign_key "rentals", "subscriptions"
   add_foreign_key "rentals", "users"
   add_foreign_key "stripe_sessions", "users"
