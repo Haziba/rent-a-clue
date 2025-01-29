@@ -4,58 +4,7 @@
     <%= render @fine if @fine.present? %>
 <% end %>
 
-<section class="bg-white shadow-md rounded-lg p-6 mb-6">
-    <h2 class="text-xl font-semibold mb-4">Subscription Status</h2>
-    <% if @subscription %>
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-lg font-medium">Plan: <span class="text-blue-500">Monthly</span></p>
-                <p class="text-sm text-gray-600">Next Billing Date: <span class="text-gray-800"><%= @subscription.last_payment_date.present? ? @subscription.last_payment_date + 1.month : '-' %></span></p>
-            </div>
-            <% if @subscription.active %>
-                <div class="px-4 py-2 bg-green-100 text-green-700 font-semibold rounded-full">
-                    Active
-                </div>
-            <% else %>
-                <div class="px-4 py-2 bg-red-100 text-red-700 font-semibold rounded-full">
-                    Inactive
-                </div>
-            <% end %>
-        </div>
-    <% else %>
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-lg font-medium">Plan: <span class="text-blue-500">Not active</span></p>
-                <div class="w-100">
-                    <form action="/checkout/session/create" method="POST" data-turbo="false">
-                        <input type="hidden" name="priceId" value="price_1QcW4lFqOwmU7NyixKqqcqIU" />
-                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                        <button type="submit" class="mx-auto px-6 py-2 bg-green-600 hover:bg-green-900 text-white">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    <% end %>
-</section>
-
-<section class="bg-white shadow-md rounded-lg p-6 mb-6">
-    <h2 class="text-xl font-semibold mb-4">Shipping Details</h2>
-    <% if @contact %>
-        <div class="flex items-center justify-between">
-            <%= render @contact %>
-        </div>
-    <% else %>
-        <div class="flex items-center justify-between">
-            <div>
-                <div class="w-100">
-                    <%= link_to "Add shipping details", new_contact_path, class: 'mx-auto px-6 py-2 bg-green-600 hover:bg-green-900 text-white' %>
-                </div>
-            </div>
-        </div>
-    <% end %>
-</section>
-
-<section class="bg-white shadow-md rounded-lg p-6">
+<section class="bg-white shadow-md rounded-lg p-6 mb-6 w-full">
     <% if @active_rental %>
         <h2 class="text-xl font-semibold mb-4">Current Rental</h2>
         <%= render @active_rental %>
@@ -63,3 +12,56 @@
         No active Rental
     <% end %>
 </section>
+
+<div class="flex flex-col md:flex-row gap-4">
+    <section class="bg-white shadow-md rounded-lg p-6 mb-6 md:w-1/2">
+        <h2 class="text-xl font-semibold mb-4">Subscription Status</h2>
+        <% if @subscription %>
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-lg font-medium">Plan: <span class="text-blue-500">Monthly</span></p>
+                    <p class="text-sm text-gray-600">Next Billing Date: <span class="text-gray-800"><%= @subscription.last_payment_date.present? ? @subscription.last_payment_date + 1.month : '-' %></span></p>
+                </div>
+                <% if @subscription.active %>
+                    <div class="px-4 py-2 bg-green-100 text-green-700 font-semibold rounded-full">
+                        Active
+                    </div>
+                <% else %>
+                    <div class="px-4 py-2 bg-red-100 text-red-700 font-semibold rounded-full">
+                        Inactive
+                    </div>
+                <% end %>
+            </div>
+        <% else %>
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-lg font-medium">Plan: <span class="text-blue-500">Not active</span></p>
+                    <div class="w-100">
+                        <form action="/checkout/session/create" method="POST" data-turbo="false">
+                            <input type="hidden" name="priceId" value="price_1QcW4lFqOwmU7NyixKqqcqIU" />
+                            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                            <button type="submit" class="mx-auto px-6 py-2 bg-green-600 hover:bg-green-900 text-white">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </section>
+
+    <section class="bg-white shadow-md rounded-lg p-6 mb-6 md:w-1/2">
+        <h2 class="text-xl font-semibold mb-4">Shipping Details</h2>
+        <% if @contact %>
+            <div class="flex items-center justify-between">
+                <%= render @contact %>
+            </div>
+        <% else %>
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="w-100">
+                        <%= link_to "Add shipping details", new_contact_path, class: 'mx-auto px-6 py-2 bg-green-600 hover:bg-green-900 text-white' %>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </section>
+</div>
