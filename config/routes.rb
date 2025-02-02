@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     passwords: 'users/passwords'
   }
 
+  get 'verify_email', to: 'devise/confirmations#pending', as: :verify_email
+
   devise_for :admins, path: 'admins', controllers: {
     sessions: 'admins/sessions',
     passwords: 'admins/passwords'
@@ -47,4 +49,8 @@ Rails.application.routes.draw do
   end
 
   root to: "root#index", as: :anon_root
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end

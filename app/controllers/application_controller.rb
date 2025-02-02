@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  before_action :check_email_confirmation, if: :user_signed_in?
+
   protected 
   
   def ensure_complete_account!
@@ -25,5 +27,13 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(user)
     account_path
+  end
+
+  def check_email_confirmation
+    if current_user.present? && !current_user.confirmed?
+      sign_out current_user
+      flash[:alert] = "You need to confirm your email before signing in."
+      redirect_to new_user_session_path
+    end
   end
 end

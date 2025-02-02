@@ -147,11 +147,17 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
-    launchy (3.0.1)
+    launchy (3.1.0)
       addressable (~> 2.8)
       childprocess (~> 5.0)
+      logger (~> 1.6)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
+    letter_opener_web (3.0.0)
+      actionmailer (>= 6.1)
+      letter_opener (~> 1.9)
+      railties (>= 6.1)
+      rexml
     logger (1.6.4)
     loofah (2.23.1)
       crass (~> 1.0.2)
@@ -301,7 +307,7 @@ DEPENDENCIES
   dotenv
   importmap-rails
   jbuilder
-  letter_opener
+  letter_opener_web
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.5, >= 7.1.5.1)

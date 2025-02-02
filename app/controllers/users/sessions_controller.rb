@@ -9,9 +9,10 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    redirect_to verify_email_path if current_user.present? && !current_user.confirmed?
+    super
+  end
 
   # DELETE /resource/sign_out
   # def destroy
