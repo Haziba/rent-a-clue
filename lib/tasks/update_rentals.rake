@@ -12,8 +12,8 @@ namespace :rentals do
   end
 
   def update_status(rental)
-    parcel_status = rental.parcel_id.present? ? send_cloud.get_parcel_status(rental.parcel_id) : nil
-    return_status = rental.return_id.present? ? send_cloud.get_parcel_status(rental.return_id) : nil
+    parcel_status = rental.sent_parcel.present? ? send_cloud.get_parcel_status(rental.sent_parcel.send_cloud_id) : nil
+    return_status = rental.return_parcel.present? ? send_cloud.get_parcel_status(rental.return_parcel.send_cloud_id) : nil
 
     puts "Updating rental #{rental.id}. Rental status: #{rental.status}. Parcel status: #{parcel_status}. Return status: #{return_status}"
 
