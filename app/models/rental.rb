@@ -94,7 +94,7 @@ class Rental < ApplicationRecord
 
   def tracking_link
     return return_parcel.tracking_url if to_be_returned? || late? || returned? || lost?
-    sent_parcel.tracking_url
+    sent_parcel.tracking_url if sent_parcel.present?
   end
 
   private
