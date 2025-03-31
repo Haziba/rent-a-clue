@@ -76,7 +76,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'rent-a-clue.co.uk', port: 3000 }
+  config.action_mailer.default_url_options = { host: 'rent-a-clue.co.uk' }
 
   mailertogo_host     = ENV.fetch("MAILERTOGO_SMTP_HOST")
   mailertogo_port     = ENV.fetch("MAILERTOGO_SMTP_PORT", 587)
