@@ -33,14 +33,14 @@ class Stripe::Client
     })['id']
   end
 
-  def attach_payment_method(payment_method:, customer:)
+  def attach_payment_method(user:, payment_method:)
     Stripe::Customer.create({
-      email: 'harry.boyes@example.com',
+      email: user.email,
     })
 
     Stripe::PaymentMethod.attach(
       payment_method,
-      { customer: customer }
+      { customer: user.stripe_customer_id }
     )
   end
 
