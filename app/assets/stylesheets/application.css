@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+.admin-wrapper a {
+  font-weight: 600;
+  text-decoration: underline;
+}
