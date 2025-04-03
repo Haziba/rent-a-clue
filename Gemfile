@@ -78,3 +78,5 @@ gem "stripe", "~> 13.3"
 gem "aws-sdk-s3", "~> 1.178"
 
 gem "rspec-core", "~> 3.13"
+
+gem "annotaterb", "~> 4.14"
