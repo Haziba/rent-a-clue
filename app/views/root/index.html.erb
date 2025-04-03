@@ -1,38 +1,52 @@
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <section class="bg-white shadow-md rounded-lg md:mb-12">
-    <div class="p-8">
-      <h1 class="text-4xl font-bold mb-4">Monthly Puzzle Box Rental Subscription!</h1>
-      <p class="text-lg text-gray-700 mb-6">Subscribe today to received monthly puzzle box rentals straight to your door. Perfect for puzzle enthusiasts of all ages!</p>
-      <div class="text-center mt-8">
-        <%= link_to "Subscribe now", new_user_registration_path, class: 'px-6 py-3 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600' %>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-white shadow-md rounded-lg mb-6 md:mb-12">
-    <div class="p-8">
-      <h2 class="text-2xl font-bold mb-4">How does it work?</h2>
-      <ol class="list-decimal list-inside">
-        <li>Subscribe to our monthly Puzzle Box service</li>
-        <li>Receive a fun-filled Puzzle Box to solve</li>
-        <li>Complete the Puzzle Box and send it back with the included prepaid label</li>
+<!-- How It Works Section -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+    <!-- Text Content -->
+    <div class="flex-1">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-4">How Does It Work?</h2>
+      <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+        <li>Subscribe to our monthly Puzzle Box service.</li>
+        <li>Receive a fun-filled Puzzle Box to solve.</li>
+        <li>Complete the Puzzle Box and send it back with the included prepaid label.</li>
         <li>Be sent a new Puzzle Box!</li>
       </ol>
     </div>
-  </section>
-</div>
 
-<section class="mb-12 mx-6">
-  <div class="flex justify-between">
-    <h2 class="text-2xl font-semibold text-center mb-6 flex-grow">Explore Our Puzzle Boxes</h2>
-    <%= link_to "All", puzzles_path, class: 'bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 mb-6' %>
+    <!-- Image -->
+    <div class="flex-1">
+    <%= image_tag 'trials-of-camelot.jpg', alt: 'Trials of Camelot', class: "w-full max-w-sm mx-auto" %>
+    </div>
   </div>
-  <div class="relative">
-    <!-- Carousel Wrapper -->
-    <div class="overflow-x-auto whitespace-nowrap space-x-4 flex justify-center">
-      <% @puzzles.each_with_index do |puzzle, index| %>
-        <%= render partial: "puzzles/puzzle", locals: { puzzle: puzzle, index: index, small: true } %>
-      <% end %>
+</section>
+
+<!-- Puzzle Boxes Section -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-10">Explore Our Puzzle Boxes</h2>
+
+    <!-- Carousel-like wrapper -->
+    <div class="flex justify-center items-center gap-4 relative" data-controller="carousel">
+      <!-- Left arrow -->
+      <button class="absolute left-0 top-1/2 -translate-y-1/2 bg-white border border-dashed rounded-full w-10 h-10 flex items-center justify-center shadow" data-action="click->carousel#scrollLeft">
+        &#8592;
+      </button>
+
+      <!-- Puzzle Box Cards -->
+      <div class="flex flex-nowrap gap-6 mx-12 overflow-x-scroll snap-x snap-mandatory scroll-smooth pb-4" data-carousel-target="container">
+        <% @puzzles.each_with_index do |puzzle, index| %>
+          <%= render partial: "puzzles/puzzle", locals: { puzzle: puzzle, index: index, small: true } %>
+        <% end %>
+      </div>
+
+      <!-- Right arrow -->
+      <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-white border border-dashed rounded-full w-10 h-10 flex items-center justify-center shadow" data-action="click->carousel#scrollRight">
+        &#8594;
+      </button>
+    </div>
+
+    <!-- View All Button -->
+    <div class="mt-10">
+      <%= link_to "View All", puzzles_path, class: 'bg-teal-400 hover:bg-teal-500 text-white font-semibold py-3 px-6 rounded-full shadow-md transition' %>
     </div>
   </div>
 </section>
