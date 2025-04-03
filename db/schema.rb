@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_29_170433) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_03_075903) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -135,6 +135,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_29_170433) do
     t.string "stripe_payment_intent_id"
     t.uuid "sent_parcel_id"
     t.uuid "return_parcel_id"
+    t.date "start_date"
+    t.date "end_date"
     t.index ["inventory_id"], name: "index_rentals_on_inventory_id"
     t.index ["return_parcel_id"], name: "index_rentals_on_return_parcel_id"
     t.index ["sent_parcel_id"], name: "index_rentals_on_sent_parcel_id"
