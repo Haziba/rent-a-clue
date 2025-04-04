@@ -31,6 +31,6 @@ class RentalReview < ApplicationRecord
   private
 
   def update_rental_status
-    rental.review_return!
+    rental.review_return!(pass: !fine.present?)
   end
 end

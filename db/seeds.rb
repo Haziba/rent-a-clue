@@ -15,6 +15,18 @@ Stripe::Client.class_eval do
   end
 end
 
+RentalMailer.class_eval do
+  def self.return_approved(rental:)
+    puts "[SEED] Skipping real email for #{rental.id}"
+    OpenStruct.new(deliver_now: true)
+  end
+
+  def self.return_denied(rental:)
+    puts "[SEED] Skipping real email for #{rental.id}"
+    OpenStruct.new(deliver_now: true)
+  end
+end
+
 ########################################################
 ####################### Admins #########################
 ########################################################
@@ -31,25 +43,29 @@ Admin.create!(
 lots_of_rentals_user = User.create!(
   email: "lots_of_rentals@example.com",
   password: "password",
-  terms_of_service: true
+  terms_of_service: true,
+  confirmed_at: Time.now
 )
 
 no_rentals_user = User.create!(
   email: "no_rentals@example.com",
   password: "password",
-  terms_of_service: true
+  terms_of_service: true,
+  confirmed_at: Time.now
 )
 
 fine_to_pay_user = User.create!(
   email: "fine_to_pay@example.com",
   password: "password",
-  terms_of_service: true
+  terms_of_service: true,
+  confirmed_at: Time.now
 )
 
 inactive_user = User.create!(
   email: "inactive_user@example.com",
   password: "password",
-  terms_of_service: true
+  terms_of_service: true,
+  confirmed_at: Time.now
 )
 
 ########################################################
@@ -204,58 +220,48 @@ end
 ####################### Rentals ########################
 ########################################################
 
-Rental.create!(
-  user_id: lots_of_rentals_user.id,
-  subscription_id: lots_of_rentals_user.subscription.id,
-  inventory: Puzzle.first.available_inventory.first,
-  created_at: Date.today - 6.months,
-  status: "return_reviewed"
+def create_rental(user:, puzzle:, created_at:, status:)
+  Rental.create!(
+    user_id: user.id,
+    subscription_id: user.subscription.id,
+    inventory: puzzle.available_inventory.first,
+    created_at: created_at,
+    status: status,
+    sent_parcel: Parcel.create!(
+      tracking_url: "https://www.google.com"
+    ),
+    return_parcel: Parcel.create!(
+      tracking_url: "https://www.google.com"
+    )
+  )
+end
+
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.first, created_at: Date.today - 6.months, status: "return_reviewed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(1).first, created_at: Date.today - 5.months, status: "return_reviewed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(2).first, created_at: Date.today - 4.months, status: "return_reviewed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(3).first, created_at: Date.today - 3.months, status: "return_reviewed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(4).first, created_at: Date.today - 2.months, status: "return_reviewed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(5).first, created_at: Date.today - 1.month, status: "to_be_returned")
+
+create_rental(user: fine_to_pay_user, puzzle: Puzzle.first, created_at: Date.today + 5.days, status: "returned")
+
+########################################################
+####################### Reviews ########################
+########################################################
+
+RentalReview.create!(
+  rental: fine_to_pay_user.rentals.first,
+  condition: 1,
+  details: "The box was damaged"
 )
 
-Rental.create!(
-  user_id: lots_of_rentals_user.id,
-  subscription_id: lots_of_rentals_user.subscription.id,
-  inventory: Puzzle.offset(1).first.available_inventory.first,
-  created_at: Date.today - 5.months,
-  status: "return_reviewed"
-)
+########################################################
+####################### Fines ##########################
+########################################################
 
-Rental.create!(
-  user_id: lots_of_rentals_user.id,
-  subscription_id: lots_of_rentals_user.subscription.id,
-  inventory: Puzzle.offset(2).first.available_inventory.first,
-  created_at: Date.today - 4.months,
-  status: "return_reviewed"
-)
-
-Rental.create!(
-  user_id: lots_of_rentals_user.id,
-  subscription_id: lots_of_rentals_user.subscription.id,
-  inventory: Puzzle.offset(3).first.available_inventory.first,
-  created_at: Date.today - 3.months,
-  status: "return_reviewed"
-)
-
-Rental.create!(
-  user_id: lots_of_rentals_user.id,
-  subscription_id: lots_of_rentals_user.subscription.id,
-  inventory: Puzzle.offset(4).first.available_inventory.first,
-  created_at: Date.today - 2.months,
-  status: "return_reviewed"
-)
-
-Rental.create!(
-  user_id: lots_of_rentals_user.id,
-  subscription_id: lots_of_rentals_user.subscription.id,
-  inventory: Puzzle.offset(5).first.available_inventory.first,
-  created_at: Date.today - 1.month,
-  status: "to_be_returned"
-)
-
-Rental.create!(
-  user_id: fine_to_pay_user.id,
-  subscription_id: fine_to_pay_user.subscription.id,
-  inventory: Puzzle.first.available_inventory.first,
-  created_at: Date.today + 5.days,
-  status: "to_be_returned"
+Fine.create!(
+  review: fine_to_pay_user.rentals.first.review,
+  amount: 200,
+  reason: "box_damage",
+  status: "pending"
 )
