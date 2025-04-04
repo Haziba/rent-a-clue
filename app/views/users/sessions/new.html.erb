@@ -1,38 +1,48 @@
-<h2 class="text-2xl font-semibold mb-6 text-center">Log in</h2>
+<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+  <div class="bg-white p-8 md:p-10 rounded-xl shadow-lg max-w-md w-full">
+    <!-- Title -->
+    <h1 class="text-3xl font-extrabold text-center mb-2">Rent A Clue!</h1>
+    <h2 class="text-lg font-medium text-center text-gray-700 mb-6">Sign In</h2>
 
-<% if flash.any? %>
-  <div class="mb-4 max-w-md mx-auto">
-    <% flash.each do |key, message| %>
-      <div class="p-4 mb-4 text-sm text-<%= key == 'notice' ? 'green' : 'red' %>-700 bg-<%= key == 'notice' ? 'green' : 'red' %>-100 rounded-lg" role="alert">
-        <%= message %>
+    <%= form_with model: resource, as: resource_name, url: session_path(resource_name), class: "space-y-4" do |f| %>
+      <!-- Email -->
+      <div>
+        <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.email_field :email, required: true, autofocus: true,
+          class: "mt-1 block w-full border rounded-md shadow-sm px-4 py-2
+          #{resource.errors[:email].any? ? 'border-red-500 ring-1 ring-red-300' : 'border-gray-300 focus:ring-2 focus:ring-teal-400 focus:border-teal-400'}" %>
+        <% if resource.errors[:email].any? %>
+          <p class="text-sm text-red-600 mt-1">Email <%= resource.errors[:email].first %></p>
+        <% end %>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.password_field :password, required: true, autocomplete: "current-password",
+          class: "mt-1 block w-full border rounded-md shadow-sm px-4 py-2
+          #{resource.errors[:password].any? ? 'border-red-500 ring-1 ring-red-300' : 'border-gray-300 focus:ring-2 focus:ring-teal-400 focus:border-teal-400'}" %>
+        <% if resource.errors[:password].any? %>
+          <p class="text-sm text-red-600 mt-1">Password <%= resource.errors[:password].first %></p>
+        <% end %>
+      </div>
+
+      <!-- Remember Me -->
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <%= f.check_box :remember_me, class: "border-gray-300 text-teal-500 focus:ring-teal-400" %>
+        <%= f.label :remember_me, class: "leading-5" %>
+      </div>
+
+      <!-- Submit -->
+      <div>
+        <%= f.submit "Sign In", class: "w-full bg-teal-400 hover:bg-teal-500 text-white font-semibold py-3 px-6 rounded-full transition" %>
       </div>
     <% end %>
+
+    <!-- Link to Sign Up -->
+    <p class="text-center text-sm text-gray-700 mt-6">
+      Don't have an account?
+      <%= link_to "Sign Up", new_registration_path(resource_name), class: "text-teal-600 font-medium hover:underline" %>
+    </p>
   </div>
-<% end %>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6 bg-white p-8 rounded-lg shadow-md max-w-md mx-auto" }) do |f| %>
-  <div class="field">
-    <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
-    <%= f.password_field :password, autocomplete: "current-password", class: "w-full px-4 py-2 mt-1 border rounded-lg focus:ring-blue-500 focus:border-blue-500" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field flex items-center">
-      <%= f.check_box :remember_me, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" %>
-      <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-900" %>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in", class: "w-full px-6 py-3 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
-  </div>
-<% end %>
-
-<div class="text-center mt-4 text-sm text-gray-600">
-  <%= render "devise/shared/links" %>
 </div>
