@@ -1,20 +1,8 @@
-<div id="<%= dom_id contact %>">
-  <div>
-    <p class="text-lg font-medium">Name: <span class="text-blue-500"><%= contact.name %></span></p>
-  </div>
-  <div>
-    <p class="text-lg font-medium">Phone: <span class="text-blue-500"><%= contact.phone %></span></p>
-  </div>
-  <div>
-    <p class="text-lg font-medium">Address Line 1: <span class="text-blue-500"><%= contact.address_1 %></span></p>
-  </div>
-  <div>
-    <p class="text-lg font-medium">Address Line 2: <span class="text-blue-500"><%= contact.address_2 %></span></p>
-  </div>
-  <div>
-    <p class="text-lg font-medium">City: <span class="text-blue-500"><%= contact.city %></span></p>
-  </div>
-  <div>
-    <p class="text-lg font-medium">Postal Code: <span class="text-blue-500"><%= contact.postal_code %></span></p>
-  </div>
-</div>
+<ul class="text-sm text-gray-700 space-y-1" id="<%= dom_id contact %>">
+  <li><span class="font-semibold text-teal-700">Name:</span> <%= contact.name %></li>
+  <li><span class="font-semibold text-teal-700">Phone:</span> <%= contact.phone %></li>
+  <li><span class="font-semibold text-teal-700">Address Line 1:</span> <%= contact.address_1 %></li>
+  <li><span class="font-semibold text-teal-700">Address Line 2:</span> <%= contact.address_2 %></li>
+  <li><span class="font-semibold text-teal-700">City:</span> <%= contact.city %></li>
+  <li><span class="font-semibold text-teal-700">Postal Code:</span> <%= contact.postal_code %></li>
+</ul>

@@ -1,7 +1,6 @@
 class AccountsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_complete_account!
-  layout 'portal'
 
   def show
     @user = current_user
