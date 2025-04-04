@@ -24,5 +24,28 @@
         &copy; <%= Time.now.year %> Rent a Clue. All rights reserved.
       </p>
     </footer>
+
+    <% if flash.any? %>
+      <div
+        id="flash-message"
+        data-controller="flash"
+        data-flash-timeout-value="4000"
+        class="fixed bottom-6 inset-x-0 flex justify-center z-50 pointer-events-none"
+      >
+        <% flash.each do |key, message| %>
+          <% if key == 'notice' %>
+            <div class="pointer-events-auto max-w-sm w-full bg-teal-500 text-white px-4 py-3 rounded shadow transition-opacity duration-500 ease-in-out"
+                data-flash-target="message">
+              <%= message %>
+            </div>
+          <% elsif key == 'alert' %>
+            <div class="pointer-events-auto max-w-sm w-full bg-red-500 text-white px-4 py-3 rounded shadow transition-opacity duration-500 ease-in-out"
+                data-flash-target="message">
+              <%= message %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   </body>
 </html>
