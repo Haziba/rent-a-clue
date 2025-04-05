@@ -1,21 +1,35 @@
 <%= turbo_frame_tag "fine", class: "d-table-row" do %>
+  <div class="<%= class_name %>">
     <% if fine.unpaid? %>
-        <section class="bg-red-600 text-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-xl font-semibold mb-4">Fine to pay</h2>
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-lg font-medium">Fine: <span class="text-white"><%= number_to_currency(fine.amount, unit: '£') %></span></p>
-                    <p class="text-lg font-medium">Reason: <span class="text-white"><%= fine.reason.titleize %></span></p>
-                    <p class="text-lg font-medium">Status: <span class="text-white"><%= fine.status.titleize %></span></p>
-                </div>
-                <div class="px-4 py-2 bg-green-100 text-green-700 font-semibold rounded-full">
-                    <%= button_to 'Pay', pay_fine_path(fine), method: :post %>
-                </div>
-            </div>
-        </section>
+      <!-- Fine Alert Banner Inside Card -->
+      <div class="bg-red-100 border border-red-300 text-red-800 rounded-lg p-4 mb-4">
+        <div class="flex flex-row justify-between items-start md:items-center">
+          <div class="space-y-1">
+            <p class="font-semibold text-lg">
+              Fine to Pay: <span class="font-bold text-red-700"><%= number_to_currency(fine.amount, unit: '£') %></span>
+            </p>
+            <p class="text-sm">Reason: <%= fine.reason.humanize %></p>
+            <p class="text-sm">Status: <%= fine.status.capitalize %></p>
+          </div>
+          <div class="mt-4 md:mt-0 md:ml-4">
+          <%= link_to "Pay", pay_fine_path(fine),
+            class: "inline-block bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-6 rounded-full shadow-sm transition" %>
+          </div>
+        </div>
+      </div>
     <% else %>
-        <section class="bg-green-600 text-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-xl font-semibold mb-4">Fine paid, thank you!</h2>
-        </section>
+      <div class="bg-green-100 border border-green-200 text-green-800 rounded-lg p-4 mb-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+          <div class="space-y-1">
+            <p class="font-semibold text-lg">
+              Fine Paid: <%= number_to_currency(fine.amount, unit: '£') %>
+            </p>
+            <p class="text-sm">Reason: <%= fine.reason.humanize %></p>
+            <p class="text-sm">Status: <%= fine.status.capitalize %></p>
+          </div>
+          <span class="mt-4 md:mt-0 md:ml-4 inline-block bg-green-200 text-green-900 font-bold py-2 px-5 rounded-full">Paid</span>
+        </div>
+      </div>
     <% end %>
+  </div>
 <% end %>

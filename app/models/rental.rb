@@ -53,7 +53,7 @@ class Rental < ApplicationRecord
   enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, return_reviewed: 8, payment_requested: 9, payment_refused: 10 }
 
   def active?
-    !(return_reviewed? || lost?)
+    !(return_reviewed? || lost?) || review&.fine&.unpaid?
   end
 
   def receive_payment!
