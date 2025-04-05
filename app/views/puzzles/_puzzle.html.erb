@@ -1,4 +1,4 @@
-<div class="bg-white p-6 rounded-lg shadow-md snap-center min-w-[300px]">
+<div class="bg-white p-6 rounded-lg shadow-md snap-center min-w-full sm:min-w-[300px]">
   <%= image_tag url_for(puzzle.image), alt: puzzle.name, class: "mb-4 w-full h-40 object-contain" %>
   <h3 class="text-lg font-bold mb-1"><%= puzzle.name %></h3>
   <p class="text-sm text-gray-600 mb-3"><%= "#{puzzle.description[0, [30, puzzle.description.length].min]}..." %></p>

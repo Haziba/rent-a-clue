@@ -1,72 +1,148 @@
 <section class="relative h-[80vh] md:h-[70vh] sm:h-[60vh] bg-center bg-cover flex flex-col justify-center items-center text-white text-center px-4" style="background-image: url('<%= asset_path('hero.jpeg') %>');">
   <div class="absolute inset-0 bg-black opacity-50"></div>
   <!-- Top left title -->
-  <div class="absolute top-4 left-4 text-2xl md:text-3xl font-bold">Rent A Clue!</div>
+  <div class="absolute top-4 left-4 text-2xl md:text-3xl font-bold">Rent A Clue</div>
 
   <!-- Center content -->
   <div class="mt-8 relative z-10">
-    <h1 class="text-4xl md:text-5xl font-extrabold">Monthly Puzzle</h1>
-    <h2 class="text-2xl md:text-3xl font-light mt-2">Box Rental Subscription!</h2>
+    <h1 class="text-4xl md:text-5xl font-extrabold">Get a New Puzzle Challenge Every Month</h1>
+    <h2 class="text-2xl md:text-3xl font-light mt-2">—Then Send It Back!</h2>
     <p class="mt-4 max-w-xl mx-auto text-sm md:text-base font-light">
-      Subscribe today for only <strong>€15/month</strong> to receive monthly puzzle box rentals straight to your door. Perfect for puzzle enthusiasts!
+      Subscribe today for only <strong>£15/month</strong> to rent beautifully crafted Clueboxes packed with mind-bending logic puzzles. Solve them, return them, and we’ll send your next one.
     </p>
     <%= link_to "Subscribe Now", new_user_registration_path, class: 'mt-6 inline-block bg-teal-400 hover:bg-teal-500 text-white font-semibold py-3 px-6 rounded-full shadow-md transition' %>
   </div>
 </section>
 
 <div class="max-w-7xl mx-auto py-8 px-4">
-  <section class="mb-8">
-    <!-- How It Works Section -->
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
-        <!-- Text Content -->
-        <div class="flex-1">
-          <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-4">How Does It Work?</h2>
-          <ol class="list-decimal pl-6 text-gray-700 space-y-2">
-            <li>Subscribe to our monthly Puzzle Box service.</li>
-            <li>Receive a fun-filled Puzzle Box to solve.</li>
-            <li>Complete the Puzzle Box and send it back with the included prepaid label.</li>
-            <li>Be sent a new Puzzle Box!</li>
-          </ol>
-        </div>
-
-        <!-- Image -->
-        <div class="flex-1">
+  <!-- How It Works Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+      <div class="flex-1">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-4">How Does It Work?</h2>
+        <ol class="list-decimal pl-6 text-gray-700 space-y-2">
+          <li>Subscribe to our monthly Puzzle Box service.</li>
+          <li>Receive a beautifully crafted Cluebox full of intricate challenges.</li>
+          <li>Solve it before the month ends.</li>
+          <li>Return it with the prepaid label. We’ll inspect it and send your next box!</li>
+        </ol>
+      </div>
+      <div class="flex-1">
         <%= image_tag 'trials-of-camelot.jpg', alt: 'Trials of Camelot', class: "w-full max-w-sm mx-auto" %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Rent Instead of Buy Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-6">Why Rent Instead of Buy?</h2>
+      <p class="text-gray-700 max-w-2xl mx-auto mb-10">
+        Clueboxes are beautifully made and satisfying to solve—but once you've cracked them, the challenge is gone. Renting means you get the thrill of solving a new box each month without filling up your shelves.
+      </p>
+      <div class="overflow-x-auto">
+        <table class="table-auto mx-auto text-sm md:text-base text-left border border-gray-200">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="p-4">Feature</th>
+              <th class="p-4">Buying</th>
+              <th class="p-4">Renting</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t">
+              <td class="p-4">Cost per box</td>
+              <td class="p-4">~£40</td>
+              <td class="p-4">£15/month</td>
+            </tr>
+            <tr class="border-t">
+              <td class="p-4">Shelf space</td>
+              <td class="p-4">Accumulates over time</td>
+              <td class="p-4">One in, one out</td>
+            </tr>
+            <tr class="border-t">
+              <td class="p-4">Challenge</td>
+              <td class="p-4">Once only</td>
+              <td class="p-4">Monthly refresh</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Puzzle Boxes Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-10">Explore Our Puzzle Boxes</h2>
+
+      <div class="flex justify-center items-center gap-4 relative" data-controller="carousel">
+        <button class="absolute left-0 top-1/2 -translate-y-1/2 bg-white border border-dashed rounded-full w-10 h-10 flex items-center justify-center shadow" data-action="click->carousel#scrollLeft">
+          &#8592;
+        </button>
+
+        <div class="flex flex-nowrap gap-6 mx-12 overflow-x-scroll snap-x snap-mandatory scroll-smooth pb-4" data-carousel-target="container">
+          <% @puzzles.each_with_index do |puzzle, index| %>
+            <%= render partial: "puzzles/puzzle", locals: { puzzle: puzzle, index: index, small: true } %>
+          <% end %>
+        </div>
+
+        <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-white border border-dashed rounded-full w-10 h-10 flex items-center justify-center shadow" data-action="click->carousel#scrollRight">
+          &#8594;
+        </button>
+      </div>
+
+      <div class="mt-10">
+        <%= link_to "View All", puzzles_path, class: 'bg-teal-400 hover:bg-teal-500 text-white font-semibold py-3 px-6 rounded-full shadow-md transition' %>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="relative py-16 bg-center bg-cover flex flex-col justify-center items-center text-white text-center px-4" style="background-image: url('<%= asset_path('hero.jpeg') %>');">
+  <div class="absolute inset-0 bg-black opacity-50"></div>
+
+  <div class="container mx-auto px-4 text-center relative z-10">
+    <h2 class="text-2xl md:text-3xl font-extrabold mb-6">A Monthly Mental Workout</h2>
+    <p class="max-w-2xl mx-auto">
+      Each box is designed to stretch your brain, test your logic, and reward persistence. If you love escape rooms, riddles, or tactile puzzles—you’ll love Clueboxes.
+    </p>
+  </div>
+</section>
+
+<div class="max-w-7xl mx-auto py-8 px-4">
+  <!-- FAQs Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 text-center mb-10">Frequently Asked Questions</h2>
+
+      <div class="max-w-3xl mx-auto space-y-6">
+        <div class="bg-white shadow-md rounded p-4">
+          <h3 class="text-lg font-semibold text-gray-900">What happens if I return a box late?</h3>
+          <p class="text-gray-700 mt-2">You'll be charged a small late fee. Don’t worry—we’ll remind you before your due date.</p>
+        </div>
+        <div class="bg-white shadow-md rounded p-4">
+          <h3 class="text-lg font-semibold text-gray-900">What if I damage the box?</h3>
+          <p class="text-gray-700 mt-2">We inspect each box on return. Minor wear is okay, but significant damage may result in a repair or replacement charge.</p>
+        </div>
+        <div class="bg-white shadow-md rounded p-4">
+          <h3 class="text-lg font-semibold text-gray-900">Can I skip a month?</h3>
+          <p class="text-gray-700 mt-2">Yes! Just pause your subscription before the next billing date—no fees, no fuss.</p>
+        </div>
+        <div class="bg-white shadow-md rounded p-4">
+          <h3 class="text-lg font-semibold text-gray-900">Are the puzzles the same every month?</h3>
+          <p class="text-gray-700 mt-2">Nope! We track which puzzles you’ve had and ensure each one you get is new to you.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Puzzle Boxes Section -->
-    <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-10">Explore Our Puzzle Boxes</h2>
-
-        <!-- Carousel-like wrapper -->
-        <div class="flex justify-center items-center gap-4 relative" data-controller="carousel">
-          <!-- Left arrow -->
-          <button class="absolute left-0 top-1/2 -translate-y-1/2 bg-white border border-dashed rounded-full w-10 h-10 flex items-center justify-center shadow" data-action="click->carousel#scrollLeft">
-            &#8592;
-          </button>
-
-          <!-- Puzzle Box Cards -->
-          <div class="flex flex-nowrap gap-6 mx-12 overflow-x-scroll snap-x snap-mandatory scroll-smooth pb-4" data-carousel-target="container">
-            <% @puzzles.each_with_index do |puzzle, index| %>
-              <%= render partial: "puzzles/puzzle", locals: { puzzle: puzzle, index: index, small: true } %>
-            <% end %>
-          </div>
-
-          <!-- Right arrow -->
-          <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-white border border-dashed rounded-full w-10 h-10 flex items-center justify-center shadow" data-action="click->carousel#scrollRight">
-            &#8594;
-          </button>
-        </div>
-
-        <!-- View All Button -->
-        <div class="mt-10">
-          <%= link_to "View All", puzzles_path, class: 'bg-teal-400 hover:bg-teal-500 text-white font-semibold py-3 px-6 rounded-full shadow-md transition' %>
-        </div>
-      </div>
-    </section>
+  <!-- Final Call to Action -->
+  <section class="py-16 bg-white text-center">
+    <div class="max-w-2xl mx-auto px-4">
+      <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Ready to Join the Puzzle Adventure?</h2>
+      <p class="text-gray-700 mb-6">Subscribe now and start your monthly journey of mind-bending Clueboxes. There's a new challenge waiting!</p>
+      <%= link_to "Subscribe Now", new_user_registration_path, class: 'bg-teal-400 hover:bg-teal-500 text-white font-semibold py-3 px-6 rounded-full shadow-md transition' %>
+    </div>
   </section>
 </div>
