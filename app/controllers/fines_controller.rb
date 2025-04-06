@@ -8,7 +8,7 @@ class FinesController < ApplicationController
   rescue => e
     puts "Error requesting payment for fine `#{@fine.id}`: #{e.message}"
     @fine.update(status: :payment_failed)
-    current_user.subscription.mark_inactive!
+    current_user.subscription&.mark_inactive!
     redirect_to account_path
   end
 

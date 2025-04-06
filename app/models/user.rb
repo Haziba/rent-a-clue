@@ -65,4 +65,8 @@ class User < ApplicationRecord
 
     false
   end
+
+  def active_rental
+    rentals.find(&:active?)
+  end
 end

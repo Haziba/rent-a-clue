@@ -44,28 +44,32 @@ lots_of_rentals_user = User.create!(
   email: "lots_of_rentals@example.com",
   password: "password",
   terms_of_service: true,
-  confirmed_at: Time.now
+  confirmed_at: Time.now,
+  stripe_customer_id: "cus_S4oihcySD3tEcd"
 )
 
 no_rentals_user = User.create!(
   email: "no_rentals@example.com",
   password: "password",
   terms_of_service: true,
-  confirmed_at: Time.now
+  confirmed_at: Time.now,
+  stripe_customer_id: "cus_S4oihcySD3tEcd"
 )
 
 fine_to_pay_user = User.create!(
   email: "fine_to_pay@example.com",
   password: "password",
   terms_of_service: true,
-  confirmed_at: Time.now
+  confirmed_at: Time.now,
+  stripe_customer_id: "cus_S4oihcySD3tEcd"
 )
 
 inactive_user = User.create!(
   email: "inactive_user@example.com",
   password: "password",
   terms_of_service: true,
-  confirmed_at: Time.now
+  confirmed_at: Time.now,
+  stripe_customer_id: "cus_S4oihcySD3tEcd"
 )
 
 ########################################################
@@ -118,32 +122,28 @@ Contact.create!(
 
 Subscription.create!(
   user: lots_of_rentals_user,
-  stripe_subscription_id: "sub_P789012345678901234567890",
-  stripe_payment_method_id: "pm_123456789012345678901234",
+  stripe_payment_method_id: "pm_1RAf4qFqOwmU7NyiAfMNepvm",
   last_payment_date: Date.today - 1.month,
   active: true
 )
 
 Subscription.create!(
   user: no_rentals_user,
-  stripe_subscription_id: "sub_P789012345678901234567890",
-  stripe_payment_method_id: "pm_123456789012345678901234",
+  stripe_payment_method_id: "pm_1RAf4qFqOwmU7NyiAfMNepvm",
   last_payment_date: Date.today - 1.month,
   active: false
 )
 
 Subscription.create!(
   user: fine_to_pay_user,
-  stripe_subscription_id: "sub_P789012345678901234567890",
-  stripe_payment_method_id: "pm_123456789012345678901234",
+  stripe_payment_method_id: "pm_1RAf4qFqOwmU7NyiAfMNepvm",
   last_payment_date: Date.today - 1.month,
   active: true
 )
 
 Subscription.create!(
   user: inactive_user,
-  stripe_subscription_id: "sub_P789012345678901234567890",
-  stripe_payment_method_id: "pm_123456789012345678901234",
+  stripe_payment_method_id: "pm_1RAf4qFqOwmU7NyiAfMNepvm",
   last_payment_date: Date.today - 1.month,
   active: false
 )

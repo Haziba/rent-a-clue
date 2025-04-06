@@ -56,4 +56,11 @@ class RentalMailer < ApplicationMailer
     @account_url = account_url
     mail(to: rental.subscription.user.email, subject: "Cluebox return rejected - Action required")
   end
+
+  def fine_paid(rental:)
+    @rental = rental
+    @puzzle = rental.puzzle
+    @fine = rental.review.fine
+    mail(to: rental.subscription.user.email, subject: "Fine paid - #{rental.puzzle.name}")
+  end
 end

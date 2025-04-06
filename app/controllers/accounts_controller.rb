@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
     @user = current_user
     @subscription = current_user.subscription
     @contact = current_user.contact
-    @active_rental = current_user.rentals.find(&:active?)
+    @active_rental = current_user.active_rental
     @fine = current_user.fines.filter { |fine| fine.unpaid? }.first
   end
 end

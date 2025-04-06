@@ -1,8 +1,14 @@
-<div class="flex flex-col md:flex-row gap-4 items-center" id="<%= dom_id(rental) %>">
-  <%= image_tag url_for(rental.puzzle.image), alt: rental.puzzle.name, class: "w-32 h-32 object-contain" %>
-  <div class="text-sm text-gray-700 space-y-1 text-center md:text-left">
-  <p><span class="font-semibold text-teal-600">Puzzle:</span> <%= rental.inventory.puzzle.name %></p>
-    <p>Return by date: <%= (rental.created_at + 1.month).to_date %></p>
-    <p>Tracking Link: <%= link_to "Click here", rental.tracking_link, { class: "underline" } %></a></p>
-  </div>
-</div>
+<%= turbo_frame_tag "rental" do %>
+  <% if local_assigns[:rental].present? %>
+    <div class="flex flex-col md:flex-row gap-4 items-center" id="<%= dom_id(rental) %>">
+      <%= image_tag url_for(local_assigns[:rental].puzzle.image), alt: local_assigns[:rental].puzzle.name, class: "w-32 h-32 object-contain" %>
+      <div class="text-sm text-gray-700 space-y-1 text-center md:text-left">
+      <p><span class="font-semibold text-teal-600">Puzzle:</span> <%= local_assigns[:rental].inventory.puzzle.name %></p>
+        <p>Return by date: <%= (local_assigns[:rental].created_at + 1.month).to_date %></p>
+        <p>Tracking Link: <%= link_to "Click here", local_assigns[:rental].tracking_link, { class: "underline" } %></a></p>
+      </div>
+    </div>
+  <% else %>
+    No active Rental
+  <% end %>
+<% end %>

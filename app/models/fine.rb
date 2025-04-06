@@ -31,6 +31,7 @@ class Fine < ApplicationRecord
   def pay!
     throw 'Fine not ready to be paid' unless pending?
     update!(status: :paid)
+    review.rental.pay_fine!
   end
 
   def unpaid?
