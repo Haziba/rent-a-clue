@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "active_rental" do %>
+  <div class="bg-white rounded-xl shadow p-6">
+    <div class="flex">
+      <h2 class="text-lg font-semibold mb-4 flex-grow">Current Rental</h2>
+      <% if local_assigns[:rental].present? %>
+        <span class="h-[1.7rem] flex-shrink px-3 py-1 text-xs <%= rental_status_classes(local_assigns[:rental].status) %> rounded-full font-medium"><%= local_assigns[:rental].status.titleize %></span>
+      <% end %>
+    </div>
+    
+    <% if local_assigns[:rental].present? %>
+      <%= render local_assigns[:rental] %>
+    <% else %>
+      No active Rental
+    <% end %>
+  </div>
+<% end %>

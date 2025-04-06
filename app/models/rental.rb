@@ -49,12 +49,12 @@ class Rental < ApplicationRecord
   after_save :create_rental_update_log!, if: :saved_change_to_status?
 
   after_create_commit :request_payment!
-  after_update_commit -> { broadcast_replace_to user, target: 'rental', locals: { rental: user.active_rental } }
+  after_update_commit -> { broadcast_replace_to user, target: 'active_rental', partial: 'rentals/active_rental', locals: { rental: user.active_rental } }
 
-  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, return_reviewed: 8, payment_requested: 9, payment_refused: 10, fine_paid: 11 }
+  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, payment_requested: 9, payment_refused: 10, fine_paid: 11, review_passed: 12, review_failed: 13  }
   
   def active?
-    !(return_reviewed? || lost? || fine_paid?) || review&.fine&.unpaid?
+    to_be_sent? || sent? || delivered? || to_be_returned? || late? || payment_requested? || review_failed?
   end
 
   def receive_payment!
@@ -107,13 +107,17 @@ class Rental < ApplicationRecord
 
   def review_return!(pass:)
     throw 'Rental not ready to be reviewed' unless returned?
-    update(status: :return_reviewed)
-    RentalMailer.return_approved(rental: self).deliver_now if pass
-    RentalMailer.return_denied(rental: self).deliver_now if !pass
+    if pass
+      update(status: :review_passed)
+      RentalMailer.return_approved(rental: self).deliver_now
+    else
+      update(status: :review_failed)
+      RentalMailer.return_denied(rental: self).deliver_now
+    end
   end
 
   def pay_fine!
-    throw 'Rental not ready to pay fine' unless return_reviewed?
+    throw 'Rental not ready to pay fine' unless review_failed?
     update(status: :fine_paid)
     RentalMailer.fine_paid(rental: self).deliver_now
   end

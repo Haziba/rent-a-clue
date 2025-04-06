@@ -236,11 +236,11 @@ def create_rental(user:, puzzle:, created_at:, status:)
   )
 end
 
-create_rental(user: lots_of_rentals_user, puzzle: Puzzle.first, created_at: Date.today - 6.months, status: "return_reviewed")
-create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(1).first, created_at: Date.today - 5.months, status: "return_reviewed")
-create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(2).first, created_at: Date.today - 4.months, status: "return_reviewed")
-create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(3).first, created_at: Date.today - 3.months, status: "return_reviewed")
-create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(4).first, created_at: Date.today - 2.months, status: "return_reviewed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.first, created_at: Date.today - 6.months, status: "review_passed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(1).first, created_at: Date.today - 5.months, status: "review_passed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(2).first, created_at: Date.today - 4.months, status: "review_passed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(3).first, created_at: Date.today - 3.months, status: "review_passed")
+create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(4).first, created_at: Date.today - 2.months, status: "review_passed")
 create_rental(user: lots_of_rentals_user, puzzle: Puzzle.offset(5).first, created_at: Date.today - 1.month, status: "to_be_returned")
 
 create_rental(user: fine_to_pay_user, puzzle: Puzzle.first, created_at: Date.today + 5.days, status: "returned")
@@ -252,16 +252,10 @@ create_rental(user: fine_to_pay_user, puzzle: Puzzle.first, created_at: Date.tod
 RentalReview.create!(
   rental: fine_to_pay_user.rentals.first,
   condition: 1,
-  details: "The box was damaged"
-)
-
-########################################################
-####################### Fines ##########################
-########################################################
-
-Fine.create!(
-  review: fine_to_pay_user.rentals.first.review,
-  amount: 200,
-  reason: "box_damage",
-  status: "pending"
+  details: "The box was damaged",
+  fine: Fine.new(
+    amount: 200,
+    reason: "box_damage",
+    status: "pending"
+  )
 )

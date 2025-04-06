@@ -11,30 +11,17 @@
 
 <!-- Dashboard Content -->
 <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-  <div class="mb-6">
-    <!-- Current Rental -->
-    <div class="bg-white rounded-xl shadow p-6 md:col-span-2 mb-6">
-      <div class="flex">
-        <h2 class="text-lg font-semibold mb-4 flex-grow">Current Rental</h2>
-        <% if @active_rental %>
-          <span class="h-[1.7rem] flex-shrink px-3 py-1 text-xs <%= rental_status_classes(@active_rental.status) %> rounded-full font-medium"><%= @active_rental.status.titleize %></span>
-        <% end %>
-      </div>
-      
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <% if @fine.present? %>
-          <div class="order-1 sm:order-2">
-            <%= render @fine %>
-          </div>
-        <% end %>
+  <div class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="grid gap-6">
+      <% if @fine.present? %>
+        <%= render @fine %>
+      <% end %>
 
-        <div class="order-2 sm:order-1">
-          <%= render 'rentals/rental', { rental: @active_rental } %>
-        </div>
-      </div>
+      <!-- Current Rental -->
+      <%= render 'rentals/active_rental', { rental: @active_rental } %>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-6 mb-6">
+    <div class="grid gap-6">
       <!-- Subscription Status -->
       <div class="bg-white rounded-xl shadow p-6">
         <div class="flex">
