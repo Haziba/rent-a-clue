@@ -18,4 +18,11 @@
 #
 class RentalUpdateLog < ApplicationRecord
   belongs_to :rental
+
+  after_create_commit :log_to_discord
+
+  def log_to_discord
+    DiscordLogger.instance.info("Rental #{rental.id} status updated to #{status}")
+    Rails.logger.info("Rental #{rental.id} status updated to #{status}")
+  end
 end
