@@ -3,6 +3,8 @@
   <div class="text-sm text-gray-700 space-y-1 text-center md:text-left">
   <p><span class="font-semibold text-teal-600">Puzzle:</span> <%= rental.inventory.puzzle.name %></p>
     <p>Return by date: <%= (rental.created_at + 1.month).to_date %></p>
-    <p>Tracking Link: <%= link_to "Click here", rental.tracking_link, { class: "underline" } %></a></p>
+    <% if rental.tracking_link.present? %>
+      <p>Tracking Link: <%= link_to "Click here", rental.tracking_link, { class: "underline" } %></a></p>
+    <% end %>
   </div>
 </div>

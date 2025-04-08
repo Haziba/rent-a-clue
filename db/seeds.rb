@@ -131,7 +131,7 @@ Subscription.create!(
   user: no_rentals_user,
   stripe_payment_method_id: "pm_1RAf4qFqOwmU7NyiAfMNepvm",
   last_payment_date: Date.today - 1.month,
-  active: false
+  active: true
 )
 
 Subscription.create!(

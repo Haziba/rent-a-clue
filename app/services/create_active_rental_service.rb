@@ -1,4 +1,4 @@
-class CreateRentalService
+class CreateActiveRentalService
   attr_reader :user
 
   def initialize(user:)

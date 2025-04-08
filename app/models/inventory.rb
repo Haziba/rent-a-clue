@@ -23,7 +23,7 @@ class Inventory < ApplicationRecord
   has_many :rentals
 
   def has_active_rental?
-    rentals.any? { |rental| rental.active? }
+    rentals.any? { |rental| rental.active? || rental.queued_for_next_rental? }
   end
 
   def last_rental

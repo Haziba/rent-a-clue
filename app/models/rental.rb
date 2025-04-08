@@ -48,13 +48,19 @@ class Rental < ApplicationRecord
   before_save :update_last_status_update_at, if: :will_save_change_to_status?
   after_save :create_rental_update_log!, if: :saved_change_to_status?
 
-  after_create_commit :request_payment!
   after_update_commit -> { broadcast_replace_to user, target: 'active_rental', partial: 'rentals/active_rental', locals: { rental: user.active_rental } }
 
-  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, payment_requested: 9, payment_refused: 10, fine_paid: 11, review_passed: 12, review_failed: 13  }
+  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, payment_requested: 9, payment_refused: 10, fine_paid: 11, review_passed: 12, review_failed: 13, queued_for_next_rental: 14  }
   
   def active?
     to_be_sent? || sent? || delivered? || to_be_returned? || late? || payment_requested? || review_failed?
+  end
+
+  def request_payment!
+    throw 'Rental not ready to request payment' unless queued_for_next_rental?
+    request_payment_from_stripe!
+    update!(status: :payment_requested)
+    RentalMailer.payment_requested(rental: self).deliver_now
   end
 
   def receive_payment!
@@ -126,15 +132,6 @@ class Rental < ApplicationRecord
     inventory.puzzle
   end
 
-  def request_payment!
-    payment_id = Stripe::Client.new.request_payment(amount: 1499, customer: user.stripe_customer_id, payment_method: user.subscription.stripe_payment_method_id)
-    update!(stripe_payment_intent_id: payment_id)
-  rescue => e
-    puts "Error requesting payment for rental `#{id}`: #{e.message}"
-    subscription.mark_inactive!
-    payment_refused!
-  end
-
   def show_tracking_link?
     to_be_sent? || sent? || delivered? || to_be_returned? || late? || returned? || lost?
   end
@@ -145,6 +142,15 @@ class Rental < ApplicationRecord
   end
 
   private
+
+  def request_payment_from_stripe!
+    payment_id = Stripe::Client.new.request_payment(amount: 1499, customer: user.stripe_customer_id, payment_method: user.subscription.stripe_payment_method_id)
+    update!(stripe_payment_intent_id: payment_id)
+  rescue => e
+    DiscordLogger.instance.error("Error requesting payment for rental `#{id}`: #{e.message}")
+    subscription.mark_inactive!
+    payment_refused!
+  end
 
   def update_last_status_update_at
     self.last_status_update_at = Time.current
@@ -168,7 +174,7 @@ class Rental < ApplicationRecord
       tracking_url: parcel['parcel']['tracking_url'],
     })
   rescue StandardError => e
-    puts "Error creating parcel: #{e.message} - #{parcel}"
+    DiscordLogger.instance.error("Error creating parcel: #{e.message} - #{parcel}")
   end
 
   def create_return!
@@ -180,7 +186,7 @@ class Rental < ApplicationRecord
       tracking_url: parcel['parcel']['tracking_url'],
     })
   rescue StandardError => e
-    puts "Error creating return: #{e.message} - #{parcel}"
+    DiscordLogger.instance.error("Error creating return: #{e.message} - #{parcel}")
   end
 
   def user_has_contact

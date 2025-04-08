@@ -21,8 +21,8 @@ class DiscordLogger < Logger
   private
 
   def send_to_discord(level, message)
-    puts "Sending to Discord: #{message}"
     return unless @webhook_url.present?
+    puts "Sending to Discord: #{message}"
 
     uri = URI.parse(@webhook_url)
     body = {

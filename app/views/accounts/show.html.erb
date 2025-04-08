@@ -19,6 +19,10 @@
 
       <!-- Current Rental -->
       <%= render 'rentals/active_rental', { rental: @active_rental } %>
+
+      <% if @queued_rental.present? %>
+        <%= render 'rentals/rental', { rental: @queued_rental } %>
+      <% end %>
     </div>
 
     <div class="grid gap-6">

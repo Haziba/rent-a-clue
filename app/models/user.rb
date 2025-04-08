@@ -55,6 +55,10 @@ class User < ApplicationRecord
     true
   end
 
+  def queued_rental
+    rentals.select(&:queued_for_next_rental?).first
+  end
+
   def fines
     rentals.map(&:review).compact.map(&:fine).compact
   end
