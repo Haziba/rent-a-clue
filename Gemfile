@@ -49,6 +49,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
 
   gem 'dotenv'
+  gem 'aasm-diagram'
 end
 
 group :development do
@@ -83,3 +84,5 @@ gem "aws-sdk-s3", "~> 1.178"
 gem "rspec-core", "~> 3.13"
 
 gem "annotaterb", "~> 4.14"
+
+gem "aasm", "~> 5.5"

@@ -9,7 +9,7 @@ class UpdateUserQueueService
     queue_if_needed(user: user)
 
     if user.queued_rental.nil?
-      puts "User #{user.id} has no rentals queued"
+      Rails.logger.warn("User #{user.id} has no rentals queued")
       return
     end
 

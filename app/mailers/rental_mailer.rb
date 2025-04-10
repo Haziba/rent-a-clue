@@ -7,19 +7,25 @@ class RentalMailer < ApplicationMailer
     mail(to: rental.subscription.user.email, subject: "Payment Refused - Subscription paused and action required")
   end
 
-  def sent(rental:)
+  def payment_received(rental:)
+    @rental = rental
+    @account_url = account_url
+    mail(to: rental.subscription.user.email, subject: "Payment Received - #{rental.puzzle.name} to be dispatched")
+  end
+
+  def parcel_sent(rental:)
     @rental = rental
     @puzzle = rental.puzzle
     mail(to: rental.subscription.user.email, subject: "Cluebox Sent - #{rental.puzzle.name} on its way!")
   end
 
-  def delivered(rental:)
+  def parcel_delivered(rental:)
     @rental = rental
     @puzzle = rental.puzzle
     mail(to: rental.subscription.user.email, subject: "Cluebox Delivered!")
   end
 
-  def to_be_returned(rental:)
+  def return_requested(rental:)
     @rental = rental
     @puzzle = rental.puzzle
     mail(to: rental.subscription.user.email, subject: "Cluebox to be returned - #{rental.puzzle.name}")
@@ -31,13 +37,13 @@ class RentalMailer < ApplicationMailer
     mail(to: rental.subscription.user.email, subject: "Cluebox late return - #{rental.puzzle.name}")
   end
 
-  def returned(rental:)
+  def parcel_returned(rental:)
     @rental = rental
     @puzzle = rental.puzzle
     mail(to: rental.subscription.user.email, subject: "Cluebox returned - Thank you!")
   end
 
-  def lost(rental:)
+  def parcel_lost(rental:)
     @rental = rental
     @puzzle = rental.puzzle
     @account_url = account_url

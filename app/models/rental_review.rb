@@ -31,6 +31,10 @@ class RentalReview < ApplicationRecord
   private
 
   def update_rental_status
-    rental.review_return!(pass: !fine.present?)
+    if fine.present?
+      rental.review_failed!
+    else
+      rental.review_passed!
+    end
   end
 end

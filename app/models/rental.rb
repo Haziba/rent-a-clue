@@ -35,101 +35,101 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Rental < ApplicationRecord
+  include AASM
+
   belongs_to :user
   belongs_to :subscription
   belongs_to :inventory
+  delegate :puzzle, to: :inventory
   has_many :rental_update_logs, dependent: :destroy
   belongs_to :sent_parcel, class_name: 'Parcel', optional: true
   belongs_to :return_parcel, class_name: 'Parcel', optional: true
   has_one :review, dependent: :destroy, class_name: 'RentalReview'
-
-  validate :user_has_contact
 
   before_save :update_last_status_update_at, if: :will_save_change_to_status?
   after_save :create_rental_update_log!, if: :saved_change_to_status?
 
   after_update_commit -> { broadcast_replace_to user, target: 'active_rental', partial: 'rentals/active_rental', locals: { rental: user.active_rental } }
 
-  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, payment_requested: 9, payment_refused: 10, fine_paid: 11, review_passed: 12, review_failed: 13, queued_for_next_rental: 14  }
-  
-  def active?
-    to_be_sent? || sent? || delivered? || to_be_returned? || late? || payment_requested? || review_failed?
-  end
+  enum status: { to_be_sent: 0, sent: 1, delivered: 2, to_be_returned: 4, late: 5, returned: 6, lost: 7, payment_requested: 9, payment_refused: 10, fine_paid: 11, review_passed: 12, review_failed: 13, queued_for_next_rental: 14, parcel_creation_failed: 15, parcel_creation: 16 }
 
-  def request_payment!
-    throw 'Rental not ready to request payment' unless queued_for_next_rental?
-    request_payment_from_stripe!
-    update!(status: :payment_requested)
-    RentalMailer.payment_requested(rental: self).deliver_now
-  end
+  aasm column: 'status', whiny_transitions: false do
+    state :queued_for_next_rental, initial: true
+    state :payment_requested
+    state :payment_refused
+    state :parcel_creation
+    state :parcel_creation_failed
+    state :to_be_sent
+    state :sent
+    state :delivered
+    state :to_be_returned
+    state :late
+    state :returned
+    state :lost
+    state :fine_paid
+    state :review_passed
+    state :review_failed
 
-  def receive_payment!
-    throw 'Rental not ready to receive payment' unless payment_requested? || payment_refused?
-    update!(status: :to_be_sent)
-    perform_send_cloud_actions!
-  end
+    event :request_payment do
+      transitions from: :queued_for_next_rental, to: :payment_requested, after: :after_request_payment
+    end
 
-  def refused_payment!
-    throw 'Rental not ready to refuse payment' unless payment_requested?
-    update!(status: :payment_refused)
-    RentalMailer.payment_refused(rental: self).deliver_now
-  end
+    event :receive_payment do
+      transitions from: :payment_requested, to: :parcel_creation, after: :create_parcels
+    end
 
-  def send!
-    throw 'Rental not ready to be sent' unless to_be_sent?
-    update!(status: :sent)
-    RentalMailer.sent(rental: self).deliver_now
-  end
+    event :refused_payment do
+      transitions from: :payment_requested, to: :payment_refused, after: :after_refused_payment
+    end
 
-  def deliver!
-    throw 'Rental not ready to be delivered' unless sent?
-    update(status: :delivered)
-    RentalMailer.delivered(rental: self).deliver_now
-  end
+    event :failed_to_create_parcels do
+      transitions from: :parcel_creation, to: :parcel_creation_failed
+    end
 
-  def to_be_returned!
-    throw 'Rental not ready to be returned' unless delivered?
-    update(status: :to_be_returned)
-    RentalMailer.to_be_returned(rental: self).deliver_now
-  end
+    event :parcels_created do
+      transitions from: :parcel_creation, to: :to_be_sent
+      transitions from: :parcel_creation_failed, to: :to_be_sent
+    end
 
-  def late!
-    throw 'Rental not ready to be late' unless to_be_returned?
-    update(status: :late)
-    RentalMailer.late(rental: self).deliver_now
-  end
+    event :send_parcel do
+      transitions from: :to_be_sent, to: :sent, after: :after_send_parcel
+    end
 
-  def return!
-    throw 'Rental not ready to be returned' unless to_be_returned?
-    update(status: :returned)
-    RentalMailer.returned(rental: self).deliver_now
-  end
+    event :deliver_parcel do
+      transitions from: :sent, to: :delivered, after: :after_deliver_parcel
+    end
 
-  def lost!
-    throw 'Rental not ready to be lost' unless to_be_returned? || late?
-    update(status: :lost)
-    RentalMailer.lost(rental: self).deliver_now
-  end
+    event :request_return do
+      transitions from: :delivered, to: :to_be_returned, after: :after_request_return
+    end
 
-  def review_return!(pass:)
-    throw 'Rental not ready to be reviewed' unless returned?
-    if pass
-      update(status: :review_passed)
-      RentalMailer.return_approved(rental: self).deliver_now
-    else
-      update(status: :review_failed)
-      RentalMailer.return_denied(rental: self).deliver_now
+    event :late do
+      transitions from: :to_be_returned, to: :late, after: :after_late
+    end
+
+    event :parcel_returned do
+      transitions from: :to_be_returned, to: :returned, after: :after_return_parcel
+    end
+
+    event :lost do
+      transitions from: :to_be_returned, to: :lost, after: :after_lost
+    end
+
+    event :review_passed do
+      transitions from: :returned, to: :review_passed, after: :after_review_passed
+    end
+
+    event :review_failed do
+      transitions from: :returned, to: :review_failed, after: :after_review_failed
+    end
+
+    event :pay_fine do
+      transitions from: :review_failed, to: :fine_paid, after: :after_pay_fine
     end
   end
 
-  def pay_fine!
-    throw 'Rental not ready to pay fine' unless review_failed?
-    update(status: :fine_paid)
-    RentalMailer.fine_paid(rental: self).deliver_now
-  end
-
-  def puzzle
-    inventory.puzzle
+  def active?
+    to_be_sent? || sent? || delivered? || to_be_returned? || late? || payment_requested? || review_failed?
   end
 
   def show_tracking_link?
@@ -143,13 +143,55 @@ class Rental < ApplicationRecord
 
   private
 
-  def request_payment_from_stripe!
-    payment_id = Stripe::Client.new.request_payment(amount: 1499, customer: user.stripe_customer_id, payment_method: user.subscription.stripe_payment_method_id)
-    update!(stripe_payment_intent_id: payment_id)
-  rescue => e
-    DiscordLogger.instance.error("Error requesting payment for rental `#{id}`: #{e.message}")
-    subscription.mark_inactive!
-    payment_refused!
+  def after_request_payment
+    RequestRentalPayment.new(self).call
+  end
+
+  def create_parcels
+    CreateRentalParcels.new(self).call
+    RentalMailer.payment_received(rental: self).deliver_now
+  end
+
+  def after_refused_payment
+    RentalMailer.payment_refused(rental: self).deliver_now
+  end
+
+  def after_send_parcel
+    RentalMailer.parcel_sent(rental: self).deliver_now
+  end
+
+  def after_deliver_parcel
+    RentalMailer.parcel_delivered(rental: self).deliver_now
+  end
+
+  def after_request_return
+    RentalMailer.return_requested(rental: self).deliver_now
+  end
+
+  def after_late
+    RentalMailer.late(rental: self).deliver_now
+  end
+
+  def after_return_parcel
+    RentalMailer.parcel_returned(rental: self).deliver_now
+  end
+
+  def after_lost
+    RentalMailer.parcel_lost(rental: self).deliver_now
+  end
+
+  def after_review_passed
+    RentalMailer.return_approved(rental: self).deliver_now
+    UpdateUserQueueService.new(user: user).call
+  end
+
+  def after_review_failed
+    RentalMailer.return_denied(rental: self).deliver_now
+  end
+
+  def after_pay_fine
+    RentalMailer.fine_paid(rental: self).deliver_now
+    UpdateUserQueueService.new(user: user).call
   end
 
   def update_last_status_update_at
@@ -158,38 +200,5 @@ class Rental < ApplicationRecord
 
   def create_rental_update_log!
     rental_update_logs.create!(status: status)
-  end
-
-  def perform_send_cloud_actions!
-    update(sent_parcel: create_parcel!, return_parcel: create_return!)
-  end
-
-  def create_parcel!
-    parcel_data = SendCloud::BodyBuilder.parcel_body(user: user)
-
-    parcel = SendCloud::Client.new.create_parcel(parcel_data)
-
-    Parcel.create!({
-      send_cloud_id: parcel['parcel']['id'],
-      tracking_url: parcel['parcel']['tracking_url'],
-    })
-  rescue StandardError => e
-    DiscordLogger.instance.error("Error creating parcel: #{e.message} - #{parcel}")
-  end
-
-  def create_return!
-    parcel_data = SendCloud::BodyBuilder.return_body(user: user)
-
-    parcel = SendCloud::Client.new.create_parcel(parcel_data)
-    Parcel.create!({
-      send_cloud_id: parcel['parcel']['id'],
-      tracking_url: parcel['parcel']['tracking_url'],
-    })
-  rescue StandardError => e
-    DiscordLogger.instance.error("Error creating return: #{e.message} - #{parcel}")
-  end
-
-  def user_has_contact
-    errors.add(:user, 'must have a contact') unless user.contact.present?
   end
 end
