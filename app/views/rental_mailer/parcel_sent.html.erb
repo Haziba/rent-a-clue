@@ -1,0 +1,31 @@
+<h1 style="font-size: 24px; font-weight: bold; color: #111111; text-align: center; margin-bottom: 4px;">Rent A Clue!</h1>
+<p style="font-size: 14px; color: #777777; text-align: center; margin-bottom: 32px;">
+  Unlock the Mystery, One Box at a Team
+</p>
+
+<div style="display: flex; gap: 24px; align-items: center; justify-content: center; margin-bottom: 32px;">
+  <img src="<%= @puzzle.image.url %>" alt="Puzzle Box" style="width: 200px; height: auto; border-radius: 8px;" />
+  <p style="font-size: 16px; color: #333333; line-height: 1.6; margin: 0;">
+    Your monthly puzzle has been shipped! Get ready to challenge your mind and unravel the mystery.
+    Can you solve this month’s puzzle box before the time runs out?
+  </p>
+</div>
+
+<div style="text-align: center; margin-bottom: 32px;">
+  <a href="<%= @rental.sent_parcel.tracking_url %>"
+     style="display: inline-block; background-color: #38b2ac; color: #ffffff; text-decoration: none;
+            padding: 12px 24px; border-radius: 9999px; font-weight: 500;">
+    Track Your Puzzle Box
+  </a>
+</div>
+
+<div style="font-size: 14px; color: #555555; text-align: center;">
+  <p style="margin-bottom: 8px;">
+    <strong>Contact us at:</strong>
+    <a href="mailto:hello@rentaclue.com" style="color: #38b2ac; text-decoration: none;">hello@rentaclue.com</a>
+  </p>
+  <p>
+    <strong>Manage your subscription:</strong>
+    <a href="<%= edit_user_registration_url %>" style="color: #38b2ac; text-decoration: none;">Account Settings</a>
+  </p>
+</div>
